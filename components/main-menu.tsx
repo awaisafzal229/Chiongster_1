@@ -1,78 +1,90 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { MenuIcon, ChevronRight, X } from 'lucide-react'
 import { Menu, Search, Ticket, Heart, Coins, Diamond, Wine, LogOut, User, HandHeart } from 'lucide-react'
+import Cookies from 'js-cookie'
+import { clearAuth } from '@/lib/auth'
+import Image from 'next/image'
 
 interface MenuItem {
   icon: React.ComponentType<{ className?: string }>
   label: string
   hasDropdown?: boolean
-  subItems?: Array<{
-    label: string
-    slug?: string
-  }>
+  subItems?: Array<{ label: string; slug?: string; categoryId?: number }>
   slug?: string
   highlight?: boolean
 }
-
-const menuItems: MenuItem[] = [
-  { icon: Menu, label: 'Home Page', highlight: true },
-  { 
-    icon: HandHeart, 
-    label: 'Choose Your Vibes', 
-    hasDropdown: true,
-    subItems: [
-      { label: 'Happy Hour', slug: 'happy-hour' },
-      { label: 'Activities', slug: 'activities' },
-      { label: 'Exclusive For Men', slug: 'exclusive-for-men' },
-      { label: 'Ladies Night', slug: 'ladies-night' },
-      { label: 'Classy Chill', slug: 'classy-chill' }
-    ]
-  },
-  { 
-    icon: Search, 
-    label: 'Pick Your Place', 
-    hasDropdown: true,
-    subItems: [
-      { label: 'Pub', slug: 'pub' },
-      { label: 'Lounge & Bar', slug: 'category/lounge-and-bar' },
-      { label: 'KTV Nightclub', slug: 'category/ktv-nightclub' },
-      { label: 'Boys Club', slug: 'category/boys-club' },
-      { label: 'Flower Joint', slug: 'category/flower-joint' },
-      { label: 'Thai Disco', slug: 'category/thai-disco' },
-      { label: 'Family KTV', slug: 'category/family-ktv' }
-    ]
-  },
-  { 
-    icon: Ticket, 
-    label: 'My Bookings', 
-    hasDropdown: true,
-    subItems: [
-      { label: 'Current Bookings' },
-      { label: 'Past Bookings', slug: 'my-bookings/past-booking' }
-    ]
-  },
-  { icon: Heart, label: 'My Favourites' },
-  { icon: Coins, label: 'My Drink Dollars', slug: 'my-drink-dollars' },
-  { icon: Diamond, label: 'Insider Benefits', slug: 'ins-benefits' },
-  { icon: Wine, label: 'My Alcohol Balance', slug: 'my-alcohol-balance' },
-]
 
 export function MainMenu() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [expandedItems, setExpandedItems] = useState<string[]>([])
   const [selectedItem, setSelectedItem] = useState('Home Page')
+  const [venueCategories, setVenueCategories] = useState<{ id: number; name: string }[]>([])
+
+  // Fetch Venue Categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('https://chat.innov8sion.com/api/venue-categories/names/')
+        if (!response.ok) throw new Error('Failed to fetch')
+        const data = await response.json()
+        setVenueCategories(data)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+
+    fetchCategories()
+  }, [])
+
+  // Dynamic Menu Items
+  const menuItems: MenuItem[] = [
+    { icon: Menu, label: 'Home Page', highlight: true },
+    {
+      icon: HandHeart,
+      label: 'Choose Your Vibes',
+      hasDropdown: true,
+      subItems: [
+        { label: 'Happy Hour', slug: 'happy-hour' },
+        { label: 'Activities', slug: 'activities' },
+        { label: 'Exclusive For Men', slug: 'exclusive-for-men' },
+        { label: 'Ladies Night', slug: 'ladies-night' },
+        { label: 'Classy Chill', slug: 'classy-chill' }
+      ]
+    },
+    {
+      icon: Search,
+      label: 'Pick Your Place',
+      hasDropdown: true,
+      subItems: venueCategories.map(category => ({
+        label: category.name,
+        slug: `category/${category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+        categoryId: category.id
+      }))
+    },
+    {
+      icon: Ticket,
+      label: 'My Bookings',
+      hasDropdown: true,
+      subItems: [
+        { label: 'Current Bookings' },
+        { label: 'Past Bookings', slug: 'my-bookings/past-booking' }
+      ]
+    },
+    { icon: Heart, label: 'My Favourites', slug: 'my-favourites' },
+    { icon: Coins, label: 'My Drink Dollars', slug: 'my-drink-dollars' },
+    { icon: Diamond, label: 'Insider Benefits', slug: 'ins-benefits' },
+    { icon: Wine, label: 'My Alcohol Balance', slug: 'my-alcohol-balance' },
+  ]
 
   const toggleSubmenu = (label: string) => {
-    setExpandedItems(prev => 
-      prev.includes(label) 
-        ? prev.filter(item => item !== label)
-        : [...prev, label]
+    setExpandedItems(prev =>
+      prev.includes(label) ? prev.filter(item => item !== label) : [...prev, label]
     )
   }
 
@@ -99,30 +111,52 @@ export function MainMenu() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('session')
-    router.push('/login')
-    router.refresh()
+    // Clear all auth data using our auth utility
+    clearAuth();
+
+    // Remove any additional cookies
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+
+    // Reload the page and redirect to login
+    window.location.href = '/login';
   }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button className="p-1">
-          <MenuIcon className="w-6 h-6" />
-        </button>
+        <div className="relative">
+          {/* ✅ Fixed Navigation Bar */}
+          <div className="fixed top-0 left-0 w-full z-50 bg-black p-2 shadow-md">
+            <button className="flex items-center gap-x-3 p-2 bg-black">
+              <MenuIcon className="w-6 h-6 text-white" />
+              <Link href="/">
+                <Image
+                  src="/logo.jpg"
+                  alt="ChioNightOut"
+                  width={120}
+                  height={30}
+                  className="h-8 w-auto"
+                />
+              </Link>
+            </button>
+          </div>
+
+          {/* ✅ Push Content Below Navbar (inside the same parent div) */}
+          <main className="pt-16">
+            {/* <h1 className="text-white">Your Content Starts Here</h1>
+            <p className="text-gray-300">This will now be visible below the fixed navbar.</p> */}
+          </main>
+        </div>
       </SheetTrigger>
-      <SheetContent 
-        side="left" 
+      <SheetContent
+        side="left"
         className="w-full sm:w-[400px] p-0 bg-[#121212] border-zinc-800"
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-y-auto">
+
           {/* Profile Section */}
           <div className="relative h-[120px] bg-[#1E1E1E] p-4">
-            <button 
-              onClick={() => setOpen(false)}
-              className="absolute right-4 top-4 text-white"
-            >
-            </button>
             <div className="flex items-center gap-3 mt-4">
               <div className="w-12 h-12 rounded-full bg-zinc-700 flex items-center justify-center">
                 <User className="w-6 h-6 text-zinc-400" />
@@ -144,21 +178,15 @@ export function MainMenu() {
             {menuItems.map((item) => (
               <div key={item.label}>
                 <button
-                  className={`flex items-center justify-between w-full px-6 py-4 hover:bg-zinc-900/50 transition-colors ${
-                    item.highlight ? 'p-8 text-[#FF1493] bg-[#FF1493]/5' : 'text-white'
-                  }`}
+                  className={`flex items-center justify-between w-full px-6 py-4 hover:bg-zinc-900/50 transition-colors ${item.highlight ? 'p-8 text-[#FF1493] bg-[#FF1493]/5' : 'text-white'}`}
                   onClick={() => handleMenuItemClick(item)}
                 >
                   <div className="flex items-center gap-4">
-                    <item.icon className={`w-6 h-6 ${
-                      item.highlight ? 'text-[#FF1493]' : 'text-white'
-                    }`} />
+                    <item.icon className={`w-6 h-6 ${item.highlight ? 'text-[#FF1493]' : 'text-white'}`} />
                     <span className="font-futura text-[15px]">{item.label}</span>
                   </div>
                   {item.hasDropdown && (
-                    <ChevronRight className={`w-5 h-5 transition-transform ${
-                      expandedItems.includes(item.label) ? 'rotate-90' : ''
-                    } text-zinc-500`} />
+                    <ChevronRight className={`w-5 h-5 transition-transform ${expandedItems.includes(item.label) ? 'rotate-90' : ''} text-zinc-500`} />
                   )}
                 </button>
                 {item.hasDropdown && expandedItems.includes(item.label) && (
@@ -178,25 +206,9 @@ export function MainMenu() {
             ))}
           </div>
 
-          {/* Subscribe Banner */}
-          <div className="px-4 py-3">
-            <Link href="/subscribe">
-              <div className="rounded-lg p-4 bg-gradient-to-br from-[#1E1E1E] to-[#121212] flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Diamond className="w-10 h-10 text-[#FF1493]" />
-                  <div>
-                    <div className="font-medium text-white text-base">Subscribe to Pro Chiongster</div>
-                    <div className="text-sm text-white/60">Earn more benefits</div>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-white/40" />
-              </div>
-            </Link>
-          </div>
-
           {/* Log Out */}
           <div className="border-t border-zinc-800">
-            <button 
+            <button
               className="flex items-center gap-4 w-full px-6 py-4 hover:bg-zinc-900/50 text-white"
               onClick={handleLogout}
             >
@@ -209,4 +221,3 @@ export function MainMenu() {
     </Sheet>
   )
 }
-

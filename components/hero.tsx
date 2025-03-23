@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -12,10 +13,23 @@ import {
 
 export function Hero() {
   const router = useRouter()
-  
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    fetch('https://chat.innov8sion.com/api/venue-categories/names/')
+      .then(response => response.json())
+      .then(data => {
+        setCategories(data.map(category => ({
+          name: category.name,
+          slug: category.name.toLowerCase().replace(/\s+/g, '-')
+        })))
+      })
+      .catch(error => console.error('Error fetching categories:', error))
+  }, [])
+
   const handleCategoryChange = (value: string) => {
     if (value !== 'all') {
-      router.push(`/category/${value.toLowerCase().replace(/ /g, '-')}`)
+      router.push(`/category/${value}`)
     }
   }
 
@@ -24,23 +38,27 @@ export function Hero() {
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-1.5xl font-bold text-white font-futura mb-4">Discover Drinking Spots Near You</h1>
+    <div className="mt-10 p-6 space-y-6">
+      {/* <h1 className="text-1.5xl font-bold text-white font-futura mb-4">Discover Drinking Spots Near You</h1> */}
       <Select onValueChange={handleCategoryChange}>
-        <SelectTrigger className="w-full bg-zinc-700 text-white">
+        <SelectTrigger className="w-full bg-transparent border border-pink-500 text-white">
           <SelectValue placeholder="All Categories" />
         </SelectTrigger>
-        <SelectContent className="bg-zinc-500 border-zinc-500 text-black">
-          <SelectItem value="all">All Categories</SelectItem>
-          <SelectItem value="boys-club">Boys Club</SelectItem>
-          <SelectItem value="club">Club</SelectItem>
-          <SelectItem value="family-ktv">Family KTV</SelectItem>
-          <SelectItem value="family-joint">Family Joint</SelectItem>
-          <SelectItem value="ktv-nightclub">KTV Nightclub</SelectItem>
-          <SelectItem value="popular">Popular</SelectItem>
-          <SelectItem value="pub">Pub</SelectItem>
-          <SelectItem value="thai-disco">Thai Disco</SelectItem>
+        <SelectContent className="bg-black border-pink-500 text-white">
+          <SelectItem className="text-pink-400 font-bold data-[highlighted]:text-pink-500 data-[highlighted]:bg-zinc-800" value="all">
+            All Categories
+          </SelectItem>
+          {categories.map(category => (
+            <SelectItem
+              key={category.slug}
+              value={category.slug}
+              className="text-white data-[highlighted]:text-pink-500 data-[highlighted]:bg-zinc-800"
+            >
+              {category.name}
+            </SelectItem>
+          ))}
         </SelectContent>
+
       </Select>
       <Button
         className="w-full bg-gradient-to-r from-[#8E2DE2] to-[#F000FF] hover:from-[#7B27C1] hover:to-[#C000E0] text-white font-futura mt-4"
@@ -51,5 +69,3 @@ export function Hero() {
     </div>
   )
 }
-7
-

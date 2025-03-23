@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Heart, Share2, MapPin, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { VenueInfo } from '@/components/venue-info'
@@ -19,34 +19,209 @@ interface VenueDetailsPageProps {
   }
 }
 
-export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
-  const recommendedFor = ['Beer', 'Hot Babes', 'Karaoke', 'Liquor', 'Pool Table']
-  const languages = ['China', 'Vietnam']
-  const [activeTab, setActiveTab] = useState<Tab>('damage')
-  const router = useRouter()
-  
-  const minimumTips = [
-    { time: '3:00pm-9:00pm', price: '$50' },
-    { time: '7:00pm-11:00pm', price: '$50' },
-    { time: '9:00pm-2:00am', price: '$100' },
-    { time: '11:00pm-3:00am', price: '$100' },
-  ]
-  
-  // You can use the slug to fetch venue data from an API
-  // For now we'll use static data
-  const venue = {
-    name: 'Empire KTV',
-    category: 'KTV Nightclub',
-    rating: 4,
-    reviews: 16,
-    location: 'Orchard',
-    price: '$$$$$',
-    minSpend: '$78/tower',
-    address: '150 Orchard Rd, #05-20 Orchard Plaza, Singapore 238841',
-    hours: {
-      happy: '3:00pm-9:00pm; 7:00pm-11:00pm',
-      night: '9:00pm-2:00am; 11:00pm-3:00am'
+interface VenueData {
+  id: number
+  image: string
+  name: string
+  drink_dollars: number
+  categories: Array<{ id: number; name: string }>
+  districts: Array<{ id: number; name: string }>
+  activities: Array<{ id: number; name: string; icon: string }>
+  price: number
+  min_spend: number
+  venue_address: string
+  languages_full: string[]
+  rating: number
+  review_count: number
+  opening_hours: Array<{
+    id: number
+    header: string
+    timings: Array<{ id: number; timing: string }>
+  }>
+  about_sections: Array<{
+    id: number
+    header: string
+    html_content: string
+  }>
+  slug: string
+  damage_sections: Array<{
+    id: number
+    line_items: Array<{
+      id: number
+      header: string
+      no_of_pax: number
+      min_spend: number
+      nested_items: Array<{
+        id: number
+        session: string
+        text: string
+      }>
+    }>
+  }>
+  menu_sections: Array<{
+    id: number
+    header: string
+    menu_items: Array<{
+      id: number
+      name: string
+      description: string
+      price: number
+    }>
+  }>
+  menu_image_sections: Array<{
+    id: number
+    header: string
+    images: Array<{
+      id: number
+      image: string
+    }>
+  }>
+  gallery_sections: Array<{
+    id: number
+    random_image_count: number
+    images: {
+      fixed: Array<{
+        id: number
+        image: string
+        sequence: number
+      }>
+      random: Array<{
+        id: number
+        image: string
+        sequence: null
+      }>
     }
+  }>
+}
+
+function VenueDetailsSkeleton() {
+  return (
+    <main className="min-h-screen bg-black pb-20">
+      {/* Breadcrumb */}
+      <div className="px-4 py-2">
+        <div className="h-4 w-48 bg-zinc-800 rounded animate-pulse" />
+      </div>
+
+      {/* Hero Image */}
+      <div className="relative aspect-[16/9] w-full bg-zinc-800 animate-pulse" />
+
+      {/* Venue Header */}
+      <div className="p-4 space-y-4">
+        <div className="flex items-start justify-between">
+          <div className="space-y-2">
+            <div className="h-8 w-48 bg-zinc-800 rounded animate-pulse" />
+            <div className="flex gap-2">
+              <div className="h-6 w-20 bg-zinc-800 rounded-full animate-pulse" />
+              <div className="h-6 w-20 bg-zinc-800 rounded-full animate-pulse" />
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="h-10 w-10 bg-zinc-800 rounded-full animate-pulse" />
+            <div className="h-10 w-10 bg-zinc-800 rounded-full animate-pulse" />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="h-4 w-32 bg-zinc-800 rounded animate-pulse" />
+          <div className="h-4 w-24 bg-zinc-800 rounded animate-pulse" />
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="h-4 w-24 bg-zinc-800 rounded animate-pulse" />
+          <div className="h-4 w-36 bg-zinc-800 rounded animate-pulse" />
+        </div>
+
+        <div className="flex gap-4">
+          <div className="h-6 w-28 bg-zinc-800 rounded animate-pulse" />
+          <div className="h-6 w-28 bg-zinc-800 rounded animate-pulse" />
+        </div>
+
+        <div className="space-y-3 py-2">
+          <div className="flex items-start gap-3">
+            <div className="h-5 w-5 bg-zinc-800 rounded animate-pulse" />
+            <div className="h-4 w-64 bg-zinc-800 rounded animate-pulse" />
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="h-5 w-5 bg-zinc-800 rounded animate-pulse" />
+            <div className="space-y-2">
+              <div className="h-4 w-48 bg-zinc-800 rounded animate-pulse" />
+              <div className="h-4 w-64 bg-zinc-800 rounded animate-pulse" />
+            </div>
+          </div>
+        </div>
+
+        {/* Recommended For */}
+        <div className="space-y-3 pb-8">
+          <div className="h-6 w-36 bg-zinc-800 rounded animate-pulse" />
+          <div className="flex flex-wrap gap-2">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-6 w-24 bg-zinc-800 rounded-full animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* About Us */}
+      <div className="p-4 space-y-4 bg-zinc-900">
+        <div className="h-8 w-32 bg-zinc-800 rounded animate-pulse" />
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-start gap-2">
+              <div className="h-4 w-24 bg-zinc-800 rounded animate-pulse" />
+              <div className="h-4 w-64 bg-zinc-800 rounded animate-pulse" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="p-4 border-b border-zinc-800">
+        <div className="h-8 w-32 bg-zinc-800 rounded animate-pulse mb-4" />
+        <div className="grid grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-8 bg-zinc-800 rounded animate-pulse" />
+          ))}
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <div className="p-4">
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-32 bg-zinc-800 rounded animate-pulse" />
+          ))}
+        </div>
+      </div>
+
+      {/* Fixed Booking Button */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-black border-t border-zinc-800">
+        <div className="h-12 bg-zinc-800 rounded animate-pulse" />
+      </div>
+    </main>
+  )
+}
+
+export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
+  const [activeTab, setActiveTab] = useState<Tab>('damage')
+  const [venueData, setVenueData] = useState<VenueData | null>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetchVenueData = async () => {
+      try {
+        const response = await fetch(`https://chat.innov8sion.com/api/venues/${params.slug}/`)
+        const data = await response.json()
+        setVenueData(data)
+      } catch (error) {
+        console.error('Error fetching venue data:', error)
+      }
+    }
+
+    fetchVenueData()
+  }, [params.slug, router])
+
+  if (!venueData) {
+    return <VenueDetailsSkeleton />
   }
 
   return (
@@ -57,9 +232,9 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
         <span className="mx-2">/</span>
         <Link href="/category/ktv-nightclub">Category</Link>
         <span className="mx-2">/</span>
-        <Link href="/category/ktv-nightclub">KTV Nightclub</Link>
+        <Link href="/category/ktv-nightclub">{venueData.categories[0]?.name}</Link>
         <span className="mx-2">/</span>
-        <span className="text-white">Empire KTV</span>
+        <span className="text-white">{venueData.name}</span>
       </div>
 
       {/* Hero Image */}
@@ -68,8 +243,8 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
           10% OFF
         </div>
         <Image
-          src="/placeholder.svg?height=400&width=800&text=Empire+KTV"
-          alt="Empire KTV"
+          src={venueData.image}
+          alt={venueData.name}
           fill
           className="object-cover"
         />
@@ -79,9 +254,13 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
       <div className="p-4 space-y-4">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold">{venue.name}</h1>
-            <div className="inline-block px-3 py-1 bg-[#630330] rounded-full text-sm mt-2">
-              {venue.category}
+            <h1 className="text-2xl font-bold">{venueData.name}</h1>
+            <div className="flex gap-2 mt-2">
+              {venueData.categories.map(category => (
+                <div key={category.id} className="inline-block px-3 py-1 bg-[#630330] rounded-full text-sm">
+                  {category.name}
+                </div>
+              ))}
             </div>
           </div>
           <div className="flex gap-3">
@@ -96,19 +275,19 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
 
         <div className="flex items-center gap-2">
           <div className="flex items-center">
-            <span className="text-yellow-300">{'★'.repeat(venue.rating)}</span>
-            <span className="text-zinc-400">{'☆'.repeat(5 - venue.rating)}</span>
+            <span className="text-yellow-300">{'★'.repeat(Math.floor(venueData.rating))}</span>
+            <span className="text-zinc-400">{'☆'.repeat(5 - Math.floor(venueData.rating))}</span>
           </div>
-          <span className="text-sm text-zinc-400">{venue.rating} ({venue.reviews} reviews)</span>
-          <span className="text-sm text-zinc-400">• {venue.location}</span>
+          <span className="text-sm text-zinc-400">{venueData.rating} ({venueData.review_count} reviews)</span>
+          <span className="text-sm text-zinc-400">• {venueData.districts[0]?.name}</span>
         </div>
 
         <div className="flex items-center gap-4 text-sm">
           <div>
-            <span className="text-[#FFA500]">Price: {venue.price}</span>
+            <span className="text-[#FFA500]">Price: {'$'.repeat(Math.floor(venueData.price / 10))}</span>
           </div>
           <div>
-            <span className="text-[#FFA500]">Drinks Min Spend: {venue.minSpend}</span>
+            <span className="text-[#FFA500]">Drinks Min Spend: ${venueData.min_spend}</span>
           </div>
         </div>
 
@@ -125,17 +304,22 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
           <div className="flex items-start gap-3">
             <MapPin className="w-5 h-5 text-zinc-400 shrink-0" />
             <p className="text-xs text-gray-400">Address</p>
-            <p className="text-sm">{venue.address}</p>
+            <p className="text-sm">{venueData.venue_address}</p>
           </div>
           <div className="flex items-start gap-3">
             <Clock className="w-5 h-5 text-zinc-400 shrink-0" />
             <div className="text-sm space-y-1">
               <p className="text-xs text-gray-400">Opening Hours</p>
-              <p><span className="font-bold">Happy Hours:</span> {venue.hours.happy}</p>
-              <p><span className="font-bold">Night Hour:</span> {venue.hours.night}</p>
+              {venueData.opening_hours.map(hours => (
+                <p key={hours.id}>
+                  <span className="font-bold">{hours.header}:</span>{' '}
+                  {hours.timings.map(t => t.timing).join(', ')}
+                </p>
+              ))}
             </div>
           </div>
         </div>
+
         {/* Recommended For */}
         <div className="space-y-3 pb-8">
           <div className="flex items-center gap-2">
@@ -143,18 +327,18 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
             <span className="font-medium">Recommended For</span>
           </div>
           <div className="flex flex-wrap gap-2">
-            {recommendedFor.map((item) => (
+            {venueData.activities.map((activity) => (
               <span
-                key={item}
+                key={activity.id}
                 className="px-3 py-1 bg-[#630330] text-white rounded-full text-sm"
               >
-                {item}
+                {activity.name}
               </span>
             ))}
           </div>
         </div>
       </div>
-      
+
       {/* About Us */}
       <div className="p-4 space-y-4 bg-zinc-900">
         <h2 className="text-xl font-bold pt-4">About Us</h2>
@@ -163,7 +347,7 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
             <span className="text-zinc-400 w-24">Language</span>
             <span>:</span>
             <div className="flex gap-2">
-              {languages.map((lang) => (
+              {venueData.languages_full.map((lang) => (
                 <span
                   key={lang}
                   className="px-3 py-1 bg-[#630330] text-white rounded-full text-sm"
@@ -173,26 +357,15 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
               ))}
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-zinc-400 w-24">Playability</span>
-            <span>:</span>
-            <span>Medium - High</span>
-          </div>
-          <div className="flex items-start gap-2 pb-4">
-            <span className="text-zinc-400 w-24">Minimum Tips</span>
-            <span>:</span>
-            <div className="space-y-1">
-              <div className="font-medium">Mon - Sat</div>
-              {minimumTips.map((tip) => (
-                <div key={tip.time} className="text-sm">
-                  {tip.time} ({tip.price})
-                </div>
-              ))}
+          {venueData.about_sections.map(section => (
+            <div key={section.id} className="flex items-start gap-2">
+              <span className="text-zinc-400 w-24">{section.header}</span>
+              <span>:</span>
+              <div dangerouslySetInnerHTML={{ __html: section.html_content }} />
             </div>
-          </div>
+          ))}
         </div>
       </div>
-
 
       {/* Tabs */}
       <div className="p-4 border-b border-zinc-800">
@@ -207,9 +380,8 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-3 text-sm font-medium relative ${
-                activeTab === tab.id ? 'text-pink-500' : 'text-zinc-400'
-              }`}
+              className={`flex-1 py-3 text-sm font-medium relative ${activeTab === tab.id ? 'text-pink-500' : 'text-zinc-400'
+                }`}
             >
               {tab.label}
               {activeTab === tab.id && (
@@ -222,15 +394,21 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
 
       {/* Tab Content */}
       <div className="p-4">
-        {activeTab === 'damage' && <VenueInfo />}
-        {activeTab === 'menu' && <VenueMenu />}
-        {activeTab === 'photos' && <VenuePhotos />}
+        {activeTab === 'damage' && (
+          <VenueInfo
+            damageSections={venueData.damage_sections}
+            openingHours={venueData.opening_hours}
+            timings={venueData.timings}
+          />
+        )}
+        {activeTab === 'menu' && <VenueMenu menuSections={venueData.menu_sections} menuImageSections={venueData.menu_image_sections} />}
+        {activeTab === 'photos' && <VenuePhotos gallerySections={venueData.gallery_sections} />}
         {activeTab === 'review' && <VenueReviews />}
       </div>
 
       {/* Fixed Booking Button */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-black border-t border-zinc-800">
-        <Button 
+        <Button
           className="w-full bg-gradient-to-r from-[#8E2DE2] to-[#F000FF]"
           onClick={() => router.push(`/venue/${params.slug}/booking`)}
         >
@@ -240,4 +418,3 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
     </main>
   )
 }
-

@@ -9,9 +9,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
+import Cookies from "js-cookie";
+import { setAuthTokens, setUser } from '@/lib/auth';
 
-const HARDCODED_EMAIL = 'user@example.com'
-const HARDCODED_PASSWORD = 'password123'
+// const HARDCODED_EMAIL = 'user@example.com'
+// const HARDCODED_PASSWORD = 'password123'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -23,26 +25,52 @@ export default function LoginPage() {
   const router = useRouter()
   const supabase = createClientComponentClient()
 
-const handleLogin = async (e: React.FormEvent) => {
-  e.preventDefault()
-  setError(null)
-  setLoading(true)
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
 
-  try {
-    if (email === HARDCODED_EMAIL && password === HARDCODED_PASSWORD) {
-      // Set a mock session in localStorage
-      localStorage.setItem('session', JSON.stringify({ user: { email: HARDCODED_EMAIL } }))
-      router.push('/')
-      router.refresh()
-    } else {
-      throw new Error('Invalid credentials')
+    try {
+      const response = await fetch(`${API_HOST}/auth/jwt/custom/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ login: email, password }),
+      });
+
+      if (!response.ok) throw new Error('Invalid email or password');
+
+      const data = await response.json();
+      console.log(data);
+
+      // Store tokens using auth utilities
+      setAuthTokens({
+        access_token: data.access,
+        refresh_token: data.refresh
+      });
+
+      // Store user data
+      setUser({
+        email,
+        phone_number: data.phone_number || ''
+      });
+
+      // Set additional cookies if needed
+      Cookies.set("accessToken", data.access, { expires: 1 });
+      Cookies.set("refreshToken", data.refresh, { expires: 3 });
+
+      // Redirect to home page
+      window.location.href = '/';
+    } catch (error) {
+      setError('Invalid email or password. Please try again.');
+    } finally {
+      setLoading(false);
+      
     }
-  } catch (error) {
-    setError('Invalid email or password. Please try again.')
-  } finally {
-    setLoading(false)
-  }
-}
+  };
+
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
@@ -149,4 +177,3 @@ const handleLogin = async (e: React.FormEvent) => {
     </div>
   )
 }
-

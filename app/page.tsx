@@ -21,7 +21,7 @@ export default function Home() {
         <LatestPosts />
         <Footer />
       </div>
-      
+
     </main>
   )
 }

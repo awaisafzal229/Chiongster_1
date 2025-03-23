@@ -7,7 +7,7 @@ interface VenueCardProps {
 }
 
 export function VenueCard({ title, image, slug }: VenueCardProps) {
-  const href = slug ? `/venue/${slug}` : '#'
+  const href = slug ? `/category/${slug}` : '#'
   
   return (
     <Link href={href}>
@@ -25,4 +25,3 @@ export function VenueCard({ title, image, slug }: VenueCardProps) {
     </Link>
   )
 }
-

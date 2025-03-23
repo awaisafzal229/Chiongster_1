@@ -8,9 +8,10 @@ import { Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
+import { setAuthTokens, setUser } from '@/lib/auth'
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -20,72 +21,82 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const supabase = createClientComponentClient()
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_HOST;
+
 
   const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords don't match")
-      return
+      setError("Passwords don't match");
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const { error: signUpError } = await supabase.auth.signUp({
+      const userData = {
+        phone_number: phoneNumber,
         email,
-        password,
-        options: {
-          data: {
-            username,
-          },
-        },
-      })
+        password
+      };
 
-      if (signUpError) {
-        throw signUpError
+      const response = await fetch(`${API_BASE_URL}/auth/users/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Registration failed');
       }
 
-      // Insert into auth.users table
-      const { error: insertError } = await supabase
-        .from('users')
-        .insert([
-          {
-            username,
-            email,
-          },
-        ])
+      const data = await response.json();
 
-      if (insertError) {
-        throw insertError
+      // Store tokens and user data using our auth utilities
+      setAuthTokens({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token
+      });
+
+      setUser({
+        phone_number: data.phone_number,
+        email: data.email
+      });
+
+      console.log("User registered successfully");
+      // Redirect to home page since user is now logged in
+      window.location.href = '/';
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred during registration');
       }
-
-      router.push('/login')
-    } catch (error) {
-      setError(error.message)
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="space-y-6">
           <h1 className="text-2xl font-bold text-white">Create account</h1>
-          
+
           <form onSubmit={handleRegister} className="space-y-6">
             <div className="space-y-2">
               <label className="text-sm text-zinc-400" htmlFor="username">
-                Username
+                Contact # :
               </label>
               <Input
-                id="username"
+                id="phoneNUmber"
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Input Username"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Input Contact #"
                 className="bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-500"
                 required
               />
@@ -144,7 +155,7 @@ export default function RegisterPage() {
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Input Password"
+                  placeholder="Confirm Password"
                   className="bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-500 pr-10"
                   required
                 />
@@ -190,4 +201,3 @@ export default function RegisterPage() {
     </div>
   )
 }
-

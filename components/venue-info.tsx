@@ -10,52 +10,35 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-export function VenueInfo() {
+interface VenueInfoProps {
+  damageSections: Array<{
+    id: number
+    line_items: Array<{
+      id: number
+      header: string
+      no_of_pax: number
+      min_spend: number
+      nested_items: Array<{
+        id: number
+        session: string
+        text: string
+      }>
+    }>
+  }>
+  openingHours: Array<{
+    id: number
+    header: string
+    timings: Array<{ id: number; timing: string }>
+  }>
+  timings: Array<{
+    day: string
+    timing: string
+  }>
+}
+
+export function VenueInfo({ damageSections, openingHours, timings }: VenueInfoProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollPosition, setScrollPosition] = useState(0)
-
-  const rooms = [
-    {
-      type: 'S Room',
-      pax: '1-3 pax',
-      minSpend: '2 Tower / 1 Bottle',
-      hours: [
-        { type: 'Happy Hour', price: '3 tower ($156/$216)' },
-        { type: 'Night Hour', price: '2 tower ($236)' },
-        { type: 'Morning Hour', price: '2 tower ($256)' },
-      ],
-    },
-    {
-      type: 'M Room',
-      pax: '3-5 pax',
-      minSpend: '3 Tower / 2 Bottle',
-      hours: [
-        { type: 'Happy Hour', price: '3 tower ($248/$328)' },
-        { type: 'Night Hour', price: '3 tower ($358/$388)' },
-        { type: 'Morning Hour', price: '3 tower ($418)' },
-      ],
-    },
-    {
-      type: 'L Room',
-      pax: '5-7 pax',
-      minSpend: '6 Tower / 3 Bottle',
-      hours: [
-        { type: 'Happy Hour', price: '6 tower ($xxx)' },
-        { type: 'Night Hour', price: '6 tower ($xxx)' },
-        { type: 'Morning Hour', price: '6 tower ($xxx)' },
-      ],
-    },
-  ]
-
-  const openingHours = [
-    { day: 'Monday', hours: '3:00pm - 6:00am' },
-    { day: 'Tuesday', hours: '3:00pm - 6:00am' },
-    { day: 'Wednesday', hours: '3:00pm - 6:00am' },
-    { day: 'Thursday', hours: '3:00pm - 6:00am' },
-    { day: 'Friday', hours: '3:00pm - 6:00am' },
-    { day: 'Saturday', hours: '3:00pm - 6:00am' },
-    { day: 'Sunday', hours: '8:00pm - 6:00am' },
-  ]
 
   const redeemableItems = [
     {
@@ -140,58 +123,65 @@ export function VenueInfo() {
 
   return (
     <div className="space-y-8">
-      {/* Room Types */}
+      {/* Damage Sections */}
       <div className="space-y-4">
-        {rooms.map((room) => (
-          <div
-            key={room.type}
-            className="bg-zinc-900 rounded-lg p-4 space-y-4"
-          >
-            <h3 className="font-medium">{room.type}</h3>
-            <div className="text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-zinc-400"><Users /></span>
-                <span className="font-bold">No. of Pax:</span> {room.pax}
-              </div>
-            </div>
-            <div className="text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-zinc-400"><Martini /></span>
-                <span className="font-bold">Min Spend:</span> {room.minSpend}
-              </div>
-            </div>
-            <div className="space-y-2">
-              {room.hours.map((hour) => (
-                <div
-                  key={hour.type}
-                  className="grid grid-cols-3 gap-3 text-sm"
-                >
-                  <span className="text-zinc-400">{hour.type}</span>
-                  <span className="col-span-2">{hour.price}</span>
+        {damageSections.map((section) => (
+          <div key={section.id} className="space-y-4">
+            {section.line_items.map((item) => (
+              <div
+                key={item.id}
+                className="bg-zinc-900 rounded-lg p-4 space-y-4"
+              >
+                <h3 className="font-medium">{item.header}</h3>
+                <div className="text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-400"><Users /></span>
+                    <span className="font-bold">No. of Pax:</span> {item.no_of_pax}
+                  </div>
                 </div>
-              ))}
-            </div>
+                <div className="text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-400"><Martini /></span>
+                    <span className="font-bold">Min Spend:</span> ${item.min_spend}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {item.nested_items.map((nested) => (
+                    <div
+                      key={nested.id}
+                      className="grid grid-cols-3 gap-3 text-sm"
+                    >
+                      <span className="text-zinc-400">{nested.session}</span>
+                      <span className="col-span-2">{nested.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         ))}
       </div>
 
-      {/* Opening Hours Section */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          <Clock className="w-6 h-6" />
-          Opening Hours
-        </h2>
-        <div className="bg-zinc-900 rounded-lg p-4">
-          <div className="space-y-2">
-            {openingHours.map((day) => (
-              <div key={day.day} className="grid grid-cols-3 gap-3 text-sm">
-                <span className="text-zinc-400">{day.day}</span>
-                <span className="col-span-2">: {day.hours}</span>
-              </div>
-            ))}
+      {timings && timings.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <Clock className="w-6 h-6" />
+            Opening Hours
+          </h2>
+          <div className="bg-zinc-900 rounded-lg p-4">
+            <div className="space-y-2">
+              {timings.map((item, index) => (
+                <div key={index} className="grid grid-cols-3 gap-3 text-sm">
+                  <span className="text-white font-medium capitalize">{item.day}</span>
+                  <span className="col-span-2 text-zinc-400">: {item.timing}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+
 
       {/* Redeemable Items Section */}
       <div className="space-y-4">
@@ -241,7 +231,7 @@ export function VenueInfo() {
             style={{
               display:
                 scrollPosition <
-                (scrollRef.current?.scrollWidth ?? 0) - (scrollRef.current?.clientWidth ?? 0)
+                  (scrollRef.current?.scrollWidth ?? 0) - (scrollRef.current?.clientWidth ?? 0)
                   ? 'block'
                   : 'none'
             }}
@@ -267,8 +257,8 @@ export function VenueInfo() {
             <AccordionContent>
               <div className="space-y-2 mt-4">
                 {similarPlaces.map((place) => (
-                  <Link 
-                    key={place.id} 
+                  <Link
+                    key={place.id}
                     href="#"
                     className="block w-full text-[#DE3163] text-sm hover:text-[#DE3163]/90"
                   >
@@ -291,8 +281,8 @@ export function VenueInfo() {
             <AccordionContent>
               <div className="space-y-2 mt-4">
                 {nearbyPlaces.map((place) => (
-                  <Link 
-                    key={place.id} 
+                  <Link
+                    key={place.id}
                     href="#"
                     className="block w-full text-[#DE3163] text-sm hover:text-[#DE3163]/90"
                   >
@@ -307,4 +297,3 @@ export function VenueInfo() {
     </div>
   )
 }
-

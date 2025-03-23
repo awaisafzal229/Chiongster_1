@@ -108,20 +108,18 @@ export default function InsBenefitsPage() {
           {tiers.map((tier, index) => (
             <div
               key={tier.percentage}
-              className={`p-3 rounded-xl text-center relative ${
-                index === 0
-                  ? 'border-2 border-[#FF1493] bg-[#FF1493]/10'
-                  : 'bg-[#1E1E1E]'
-              }`}
+              className={`p-3 rounded-xl text-center relative ${index === 0
+                ? 'border-2 border-[#FF1493] bg-[#FF1493]/10'
+                : 'bg-[#1E1E1E]'
+                }`}
             >
               <div className="text-lg font-bold">{tier.percentage}</div>
               <div className="text-xs text-zinc-400">{tier.range}</div>
 
               <div className="mt-2 flex justify-center">
                 <div
-                  className={`w-4 h-4 rounded-full flex items-center justify-center ${
-                    index === 0 ? 'bg-[#FF1493]' : 'bg-gray-500'
-                  }`}
+                  className={`w-4 h-4 rounded-full flex items-center justify-center ${index === 0 ? 'bg-[#FF1493]' : 'bg-gray-500'
+                    }`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -197,11 +195,10 @@ export default function InsBenefitsPage() {
                       <div className="text-sm text-zinc-400">{referral.date}</div>
                     </div>
                     <div
-                      className={`text-sm ${
-                        referral.status === 'active'
-                          ? 'text-emerald-500'
-                          : 'text-zinc-400'
-                      }`}
+                      className={`text-sm ${referral.status === 'active'
+                        ? 'text-emerald-500'
+                        : 'text-zinc-400'
+                        }`}
                     >
                       {referral.status === 'active' ? 'Active' : 'Inactive'}
                     </div>
@@ -217,3 +214,5 @@ export default function InsBenefitsPage() {
       <Footer />
     </div>
 
+  )
+}
