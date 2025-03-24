@@ -8,11 +8,17 @@ import { Button } from '@/components/ui/button'
 import { MenuIcon, ChevronRight, X, Diamond } from 'lucide-react'
 import Image from 'next/image'
 
+interface SubItem {
+  id?: number
+  label: string
+  slug?: string
+}
+
 interface MenuItem {
   icon: React.ComponentType<{ className?: string }>
   label: string
   hasDropdown?: boolean
-  subItems?: Array<{ id?: number; label: string }>
+  subItems?: SubItem[]
   slug?: string
   highlight?: boolean
 }
@@ -21,7 +27,7 @@ export function GuestMenu() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [expandedItems, setExpandedItems] = useState<string[]>([])
-  const [venueCategories, setVenueCategories] = useState<MenuItem["subItems"]>([])
+  const [venueCategories, setVenueCategories] = useState<SubItem[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -63,21 +69,31 @@ export function GuestMenu() {
   const menuItems: MenuItem[] = [
     { icon: () => <span className="text-pink-500">☰</span>, label: 'Home Page', highlight: true },
     {
-      icon: () => <span>👋</span>, label: 'Choose Your Vibes', hasDropdown: true, subItems: [
-        { label: 'Happy Hour' }, { label: 'Activities' }, { label: 'Exclusive For Men' },
-        { label: 'Ladies Night' }, { label: 'Classy Chill' }
+      icon: () => <span>👋</span>,
+      label: 'Choose Your Vibes',
+      hasDropdown: true,
+      subItems: [
+        { label: 'Happy Hour', slug: '/happy-hour' },
+        { label: 'Activities', slug: '/activities' },
+        { label: 'Exclusive For Men', slug: '/exclusive-men' },
+        { label: 'Ladies Night', slug: '/ladies-night' },
+        { label: 'Classy Chill', slug: '/classy-chill' },
       ]
     },
     {
       icon: () => <span>🔍</span>,
       label: 'Pick Your Place',
       hasDropdown: true,
-      subItems: venueCategories
+      subItems: venueCategories.map((item) => ({
+        label: item.label,
+        slug: `/category/${item.label.toLowerCase().replace(/\s+/g, '-')}`,
+      }))
     },
-    { icon: () => <span>💰</span>, label: 'My Drink Dollars' },
-    { icon: () => <span>💎</span>, label: 'Insider Benefits' },
-    { icon: () => <span>🍷</span>, label: 'My Alcohol Balance' }
+    { icon: () => <span>💰</span>, label: 'My Drink Dollars', slug: '/my-drink-dollars' },
+    { icon: () => <span>💎</span>, label: 'Insider Benefits', slug: '/ins-benefits' },
+    { icon: () => <span>🍷</span>, label: 'My Alcohol Balance', slug: '/my-alcohol-balance' }
   ]
+
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -153,11 +169,12 @@ export function GuestMenu() {
                         <button
                           key={subItem.label}
                           className="flex items-center w-full px-6 py-3 text-white hover:bg-zinc-900/50 font-futura text-[15px]"
-                          onClick={() => handleNavigation('/login')}
+                          onClick={() => handleNavigation(subItem.slug || '/')}
                         >
                           <span>{subItem.label}</span>
                         </button>
                       ))
+
                     )}
                   </div>
                 )}

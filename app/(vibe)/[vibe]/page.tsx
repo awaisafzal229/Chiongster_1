@@ -86,11 +86,13 @@ export default function VibePage() {
             </header> */}
 
             {/* 🔥 Breadcrumb */}
-            <div className="px-4 py-2 text-sm text-zinc-400">
-                <Link href="/" className="hover:text-white">Home</Link>
-                <span className="mx-2">/</span>
-                <span className="text-white">{vibeTitle}</span>
+            <div className="px-4 py-2 text-sm text-zinc-400 space-x-2">
+                <Link href="/" className="underline hover:text-white">Home</Link>
+                <span>/</span>
+                <Link href={`/${slug}`} className="text-white">{vibeTitle}</Link>
             </div>
+
+
 
             {/* 🔥 Hero Banner */}
             <div className="relative h-[130px] mb-8">

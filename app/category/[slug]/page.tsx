@@ -431,23 +431,25 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   return (
     <main className="min-h-screen bg-black text-white px-4 py-6">
       {/* Breadcrumb */}
-      <div className="text-sm text-zinc-400 mb-4">
-        <span>Home</span>
-        <span className="mx-2">/</span>
-        {activityName ? (
-          <>
-            <span>Activity</span>
-            <span className="mx-2">/</span>
-            <span className="text-white">{activityName}</span>
-          </>
-        ) : (
-          <>
-            <span>Category</span>
-            <span className="mx-2">/</span>
-            <span className="text-white">{categoryName}</span>
-          </>
-        )}
+
+      <div className="text-sm text-zinc-400 mb-4 space-x-2">
+        {getBreadcrumbs().map((crumb, index, arr) => (
+          <span key={crumb.label}>
+            {crumb.href ? (
+              <Link
+                href={crumb.href}
+                className="underline hover:text-white transition-colors"
+              >
+                {crumb.label}
+              </Link>
+            ) : (
+              <span className="text-white">{crumb.label}</span>
+            )}
+            {index !== arr.length - 1 && <span className="mx-1">/</span>}
+          </span>
+        ))}
       </div>
+
       {/* Category Banner */}
       <div
         className="relative w-full h-[180px] bg-cover bg-center overflow-hidden mb-6g"
@@ -473,13 +475,13 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
 
       <div className="max-w-7xl mx-auto px-4">
         {locationError && (
-          <div className="mb-4 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+          <div className="mb-4 mt-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
             <p className="text-yellow-500 text-sm">{locationError}</p>
           </div>
         )}
 
         {error && (
-          <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <div className="mb-4 mt-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
             <p className="text-red-500 text-sm">{error}</p>
           </div>
         )}
