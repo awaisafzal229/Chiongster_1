@@ -331,9 +331,15 @@ export function TopPicks() {
                       />
                     </div>
                   </Link>
-                  <div className="absolute bottom-2 right-5 bg-purple-600 text-white text-sm px-3 py-1 rounded-lg">
-                    {venue.drink_dollars}%
+                  <div className="absolute bottom-2 right-5 bg-purple-600 text-white text-sm px-4 py-1 rounded-full flex items-center gap-1 shadow-md">
+                    <span className="font-bold text-lg">{venue.drink_dollars}%</span>
+                    <img
+                      src="/coin.png" // 🔁 Replace with actual coin icon path
+                      alt="Coin"
+                      className="w-5 h-5"
+                    />
                   </div>
+
                 </div>
                 <div className="p-4 space-y-4">
                   <div className="flex items-start justify-between">

@@ -1546,9 +1546,6 @@ body{
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
 }
-.border-white\/10{
-  border-color: rgb(255 255 255 / 0.1);
-}
 .border-yellow-500\/20{
   border-color: rgb(234 179 8 / 0.2);
 }
