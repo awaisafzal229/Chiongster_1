@@ -1,7 +1,6 @@
 {
-  "/page": "app/page.js",
-  "/activities/page": "app/activities/page.js",
-  "/venue/[slug]/page": "app/venue/[slug]/page.js",
   "/(vibe)/[vibe]/page": "app/(vibe)/[vibe]/page.js",
+  "/page": "app/page.js",
+  "/venue/[slug]/page": "app/venue/[slug]/page.js",
   "/category/[slug]/page": "app/category/[slug]/page.js"
 }

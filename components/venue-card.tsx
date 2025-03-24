@@ -19,7 +19,7 @@ export function VenueCard({ title, image, slug }: VenueCardProps) {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="relative z-20 h-full flex items-center justify-center">
-          <h3 className="text-lg font-semibold text-center px-3 py-2 ">{title}</h3>
+          <h3 className="text-md font-semibold text-center px-3 py-2 ">{title}</h3>
         </div>
       </div>
     </Link>

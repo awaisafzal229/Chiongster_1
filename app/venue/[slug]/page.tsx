@@ -92,6 +92,14 @@ interface VenueData {
       }>
     }
   }>
+  promotion_images: Array<{
+    id: number
+    image: string
+  }>
+  event_images: Array<{
+    id: number
+    image: string
+  }>
 }
 
 function VenueDetailsSkeleton() {
@@ -204,6 +212,10 @@ function VenueDetailsSkeleton() {
 export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
   const [activeTab, setActiveTab] = useState<Tab>('damage')
   const [venueData, setVenueData] = useState<VenueData | null>(null)
+  const [isPromotionModalOpen, setIsPromotionModalOpen] = useState(false);
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
+  const [currentPromoIndex, setCurrentPromoIndex] = useState(0);
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
   const router = useRouter()
 
   useEffect(() => {
@@ -220,6 +232,26 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
     fetchVenueData()
   }, [params.slug, router])
 
+  useEffect(() => {
+    if (!isPromotionModalOpen || (venueData?.promotion_images.length ?? 0) <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentPromoIndex((prev) =>
+        prev === (venueData?.promotion_images.length ?? 1) - 1 ? 0 : prev + 1
+      );
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isPromotionModalOpen, venueData])
+
+  useEffect(() => {
+    if (!isEventModalOpen || (venueData?.event_images.length ?? 0) <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentEventIndex((prev) =>
+        prev === (venueData?.event_images.length ?? 1) - 1 ? 0 : prev + 1
+      );
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isEventModalOpen, venueData])
+
   if (!venueData) {
     return <VenueDetailsSkeleton />
   }
@@ -227,15 +259,18 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
   return (
     <main className="min-h-screen bg-black pb-20">
       {/* Breadcrumb */}
-      <div className="px-4 py-2 text-sm text-zinc-400">
-        <Link href="/">Home</Link>
-        <span className="mx-2">/</span>
-        <Link href="/category/ktv-nightclub">Category</Link>
-        <span className="mx-2">/</span>
-        <Link href="/category/ktv-nightclub">{venueData.categories[0]?.name}</Link>
-        <span className="mx-2">/</span>
+      <div className="px-4 py-2 text-sm text-zinc-400 flex flex-wrap gap-1 items-center">
+        <Link href="/" className="underline hover:text-white">Home</Link>
+        <span>/</span>
+        <Link href="/category/ktv-nightclub" className="underline hover:text-white">Category</Link>
+        <span>/</span>
+        <Link href={`/category/ktv-nightclub`} className="underline hover:text-white">
+          {venueData.categories[0]?.name}
+        </Link>
+        <span>/</span>
         <span className="text-white">{venueData.name}</span>
       </div>
+
 
       {/* Hero Image */}
       <div className="relative aspect-[16/9] w-full">
@@ -291,14 +326,16 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
           </div>
         </div>
 
+        {/* ... existing venue content ... */}
         <div className="flex gap-4">
-          <Button variant="link" className="text-pink-500 p-0 h-auto">
+          <Button variant="link" className="text-pink-500 p-0 h-auto" onClick={() => { setCurrentPromoIndex(0); setIsPromotionModalOpen(true); }}>
             SEE PROMOTION
           </Button>
-          <Button variant="link" className="text-pink-500 p-0 h-auto">
+          <Button variant="link" className="text-pink-500 p-0 h-auto" onClick={() => { setCurrentEventIndex(0); setIsEventModalOpen(true); }}>
             SEE EVENT
           </Button>
         </div>
+
 
         <div className="space-y-3 py-2">
           <div className="flex items-start gap-3">
@@ -405,6 +442,45 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
         {activeTab === 'photos' && <VenuePhotos gallerySections={venueData.gallery_sections} />}
         {activeTab === 'review' && <VenueReviews />}
       </div>
+      {/* ... existing sections ... */}
+
+      {isPromotionModalOpen && venueData.promotion_images.length > 0 && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center" onClick={() => setIsPromotionModalOpen(false)}>
+          <div className="bg-zinc-900 p-4 rounded-lg w-full max-w-2xl relative overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <button className="absolute top-3 right-3 text-white text-lg" onClick={() => setIsPromotionModalOpen(false)}>✕</button>
+            <h3 className="text-center text-lg font-semibold text-white mb-3">Promotions</h3>
+            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md">
+              <img src={venueData.promotion_images[currentPromoIndex].image} alt="Promotion" className="w-full h-full object-cover transition duration-500" />
+              <button onClick={() => setCurrentPromoIndex((prev) => prev === 0 ? venueData.promotion_images.length - 1 : prev - 1)} className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">←</button>
+              <button onClick={() => setCurrentPromoIndex((prev) => prev === venueData.promotion_images.length - 1 ? 0 : prev + 1)} className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">→</button>
+            </div>
+            <div className="flex justify-center mt-3 gap-2">
+              {venueData.promotion_images.map((_, i) => (
+                <span key={i} className={`w-2 h-2 rounded-full ${i === currentPromoIndex ? 'bg-pink-500' : 'bg-zinc-600'}`} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isEventModalOpen && venueData.event_images.length > 0 && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center" onClick={() => setIsEventModalOpen(false)}>
+          <div className="bg-zinc-900 p-4 rounded-lg w-full max-w-2xl relative overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <button className="absolute top-3 right-3 text-white text-lg" onClick={() => setIsEventModalOpen(false)}>✕</button>
+            <h3 className="text-center text-lg font-semibold text-white mb-3">Events</h3>
+            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md">
+              <img src={venueData.event_images[currentEventIndex].image} alt="Event" className="w-full h-full object-cover transition duration-500" />
+              <button onClick={() => setCurrentEventIndex((prev) => prev === 0 ? venueData.event_images.length - 1 : prev - 1)} className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">←</button>
+              <button onClick={() => setCurrentEventIndex((prev) => prev === venueData.event_images.length - 1 ? 0 : prev + 1)} className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">→</button>
+            </div>
+            <div className="flex justify-center mt-3 gap-2">
+              {venueData.event_images.map((_, i) => (
+                <span key={i} className={`w-2 h-2 rounded-full ${i === currentEventIndex ? 'bg-pink-500' : 'bg-zinc-600'}`} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Fixed Booking Button */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-black border-t border-zinc-800">

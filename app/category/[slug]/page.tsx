@@ -72,30 +72,87 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  images: { id: number; image: string; }[];
+  images: { id: number; image: string }[];
+  currentIndex: number;
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const ImageModal = ({ isOpen, onClose, title, images }: ModalProps) => {
-  if (!isOpen) return null;
+
+
+const ImageModal = ({ isOpen, onClose, title, images, currentIndex, setCurrentIndex }: ModalProps) => {
+  // Auto-slide every 3 seconds
+  useEffect(() => {
+    if (!isOpen || images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isOpen, images, setCurrentIndex]);
+
+  if (!isOpen || images.length === 0) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-lg mx-4 bg-zinc-900 rounded-lg overflow-hidden">
-        <div className="flex items-center justify-between p-4 border-b border-white/10">
-          <h3 className="text-lg font-medium">{title}</h3>
-          <button onClick={onClose} className="p-1 hover:bg-white/10 rounded-full transition-colors">
-            <X className="w-5 h-5" />
+      <div
+        className="relative w-full max-w-2xl mx-4 bg-zinc-900 rounded-lg overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="relative p-4">
+          <h3 className="text-lg font-bold text-white text-center">{title}</h3>
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-1 hover:bg-white/10 rounded-full transition-colors"
+          >
+            <X className="w-5 h-5 text-white" />
           </button>
         </div>
-        <div className="p-4 max-h-[70vh] overflow-y-auto">
-          <div className="space-y-4">
-            {images.map((img) => (
-              <img
-                key={img.id}
-                src={img.image}
-                alt={title}
-                className="w-full h-auto rounded-lg"
+
+        {/* Slideshow */}
+        <div className="p-4">
+          <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md">
+            <img
+              src={images[currentIndex].image}
+              alt={title}
+              className="w-full h-full object-cover transition duration-500"
+            />
+
+            {/* Navigation Arrows */}
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={() =>
+                    setCurrentIndex(
+                      currentIndex === 0 ? images.length - 1 : currentIndex - 1
+                    )
+                  }
+                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                >
+                  ←
+                </button>
+
+                <button
+                  onClick={() =>
+                    setCurrentIndex(
+                      currentIndex === images.length - 1 ? 0 : currentIndex + 1
+                    )
+                  }
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                >
+                  →
+                </button>
+
+              </>
+            )}
+          </div>
+
+          {/* Indicators */}
+          <div className="flex justify-center mt-3 gap-2">
+            {images.map((_, i) => (
+              <span
+                key={i}
+                className={`w-2 h-2 rounded-full ${i === currentIndex ? 'bg-pink-500' : 'bg-zinc-600'}`}
               />
             ))}
           </div>
@@ -128,6 +185,10 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   const [selectedEvents, setSelectedEvents] = useState<EventImage[]>([]);
   const [isPromotionModalOpen, setIsPromotionModalOpen] = useState(false);
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
+  const [currentPromoIndex, setCurrentPromoIndex] = useState(0);
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
+
+
 
   const [favorites, setFavorites] = useState<number[]>(() => {
     if (typeof window !== 'undefined') {
@@ -710,15 +771,19 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
       <ImageModal
         isOpen={isPromotionModalOpen}
         onClose={() => setIsPromotionModalOpen(false)}
-        title="See Promotion"
+        title="Promotions"
         images={selectedPromotions}
+        currentIndex={currentPromoIndex}
+        setCurrentIndex={setCurrentPromoIndex}
       />
 
       <ImageModal
         isOpen={isEventModalOpen}
         onClose={() => setIsEventModalOpen(false)}
-        title="See Event"
+        title="Events"
         images={selectedEvents}
+        currentIndex={currentEventIndex}
+        setCurrentIndex={setCurrentEventIndex}
       />
 
       <Footer />
