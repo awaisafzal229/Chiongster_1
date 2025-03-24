@@ -43,6 +43,7 @@ export function CategorySection() {
               <CategoryCard
                 title={category.title}
                 image={category.image}
+                width={28}
                 className="bg-zinc-900 text-white rounded-lg overflow-hidden shadow-lg hover:opacity-80 transition"
               />
             </div>

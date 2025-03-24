@@ -82,7 +82,7 @@ export function VenueSection() {
         }}
       >
         {venues.map((venue) => (
-          <div key={venue.id} className="flex-none w-[250px] snap-start">
+          <div key={venue.id} className="flex-none w-[160px] snap-start">
             <VenueCard
               title={venue.name}
               image={venue.image}

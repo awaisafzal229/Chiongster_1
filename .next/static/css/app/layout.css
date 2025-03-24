@@ -683,6 +683,9 @@ body{
 .top-full{
   top: 100%;
 }
+.bottom-4{
+  bottom: 1rem;
+}
 .z-10{
   z-index: 10;
 }
@@ -850,6 +853,15 @@ body{
 }
 .aspect-video{
   aspect-ratio: 16 / 9;
+}
+.aspect-\[2\/2\]{
+  aspect-ratio: 2/2;
+}
+.aspect-\[1\/2\]{
+  aspect-ratio: 1/2;
+}
+.aspect-\[1\/1\]{
+  aspect-ratio: 1/1;
 }
 .size-4{
   width: 1rem;
@@ -1106,6 +1118,12 @@ body{
 }
 .w-\[360px\]{
   width: 360px;
+}
+.w-\[180px\]{
+  width: 180px;
+}
+.w-\[170px\]{
+  width: 170px;
 }
 .min-w-0{
   min-width: 0px;
@@ -2016,6 +2034,15 @@ body{
 .pt-8{
   padding-top: 2rem;
 }
+.pl-5{
+  padding-left: 1.25rem;
+}
+.pl-6{
+  padding-left: 1.5rem;
+}
+.pl-10{
+  padding-left: 2.5rem;
+}
 .text-left{
   text-align: left;
 }
@@ -2084,6 +2111,9 @@ body{
 }
 .font-semibold{
   font-weight: 600;
+}
+.font-thin{
+  font-weight: 100;
 }
 .uppercase{
   text-transform: uppercase;
@@ -3716,6 +3746,10 @@ body {
   .sm\:text-4xl{
     font-size: 2.25rem;
     line-height: 2.5rem;
+  }
+  .sm\:text-xl{
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
   .data-\[state\=open\]\:sm\:slide-in-from-bottom-full[data-state="open"]{
     --tw-enter-translate-y: 100%;

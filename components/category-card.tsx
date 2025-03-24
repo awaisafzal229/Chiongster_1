@@ -5,7 +5,7 @@ interface CategoryCardProps {
 
 export function CategoryCard({ title, image }: CategoryCardProps) {
   return (
-    <div className="relative h-28 overflow-hidden rounded-lg">
+    <div className="relative h-28 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20 z-10" />
       <img
         src={image}
