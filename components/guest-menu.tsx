@@ -183,7 +183,7 @@ export function GuestMenu() {
           </div>
 
           {/* Subscribe Banner */}
-          <div className="px-4 py-3 mb-2">
+          <div className="px-4 py-3 mb-4">
             <div
               className="rounded-lg p-4 bg-gradient-to-br from-[#1E1E1E] to-[#121212] flex items-center justify-between cursor-pointer"
               onClick={() => handleNavigation('/subscribe')}
