@@ -57,7 +57,7 @@ export function GuestMenu() {
       toggleSubmenu(item.label)
     } else {
       setOpen(false)
-      router.push('/login')
+      router.push(item.slug || '/')
     }
   }
 
