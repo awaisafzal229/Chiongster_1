@@ -143,20 +143,20 @@ export function MainMenu() {
           </div>
 
           {/* ✅ Push Content Below Navbar (inside the same parent div) */}
-          <main className="pt-16">
-            {/* <h1 className="text-white">Your Content Starts Here</h1>
+          {/* <main className="pt-16"> */}
+          {/* <h1 className="text-white">Your Content Starts Here</h1>
             <p className="text-gray-300">This will now be visible below the fixed navbar.</p> */}
-          </main>
+          {/* </main> */}
         </div>
       </SheetTrigger>
       <SheetContent
         side="left"
         className="w-full sm:w-[400px] p-0 bg-[#121212] border-zinc-800"
       >
-        <div className="flex flex-col h-full overflow-y-auto">
+        <div className="flex flex-col h-full overflow-y-auto pt-10">
 
           {/* Profile Section */}
-          <div className="relative h-[120px] bg-[#1E1E1E] p-4">
+          <div className="relative h-[120px] bg-[#2a2929] p-4">
             <div className="flex items-center gap-3 mt-4">
               <div className="w-12 h-12 rounded-full bg-zinc-700 flex items-center justify-center">
                 <User className="w-6 h-6 text-zinc-400" />
@@ -174,11 +174,11 @@ export function MainMenu() {
           </div>
 
           {/* Menu Items */}
-          <div className="flex-1 py-2 p-4">
+          <div className="flex-1 py-2 pl-3 pr-3 mt-2">
             {menuItems.map((item) => (
               <div key={item.label}>
                 <button
-                  className={`flex items-center justify-between w-full px-6 py-4 hover:bg-zinc-900/50 transition-colors ${item.highlight ? 'p-8 text-[#FF1493] bg-[#FF1493]/5' : 'text-white'}`}
+                  className={`flex items-center justify-between w-full rounded-sm px-6 py-4 hover:bg-zinc-900/50 transition-colors ${item.highlight ? 'p-8 text-[#FF1493] bg-[#2f2529]' : 'text-white'}`}
                   onClick={() => handleMenuItemClick(item)}
                 >
                   <div className="flex items-center gap-4">

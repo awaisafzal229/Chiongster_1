@@ -692,6 +692,9 @@ body{
 .top-1{
   top: 0.25rem;
 }
+.top-6{
+  top: 1.5rem;
+}
 .z-10{
   z-index: 10;
 }
@@ -1783,6 +1786,12 @@ body{
 .bg-\[\#b43636\]{
   --tw-bg-opacity: 1;
   background-color: rgb(180 54 54 / var(--tw-bg-opacity, 1));
+}
+.bg-\[\#1E1E1E\#2a2929\]{
+  background-color: #1E1E1E#2a2929;
+}
+.bg-\[\#2f2529\]\/5{
+  background-color: rgb(47 37 41 / 0.05);
 }
 .bg-gradient-to-b{
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
