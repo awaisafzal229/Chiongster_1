@@ -125,10 +125,10 @@ export function GuestMenu() {
       </SheetTrigger>
 
       <SheetContent side="left" className="w-full sm:w-[400px] p-0 bg-[#121212] border-zinc-800">
-        <div className="flex flex-col h-full">
+        <div className="pt-9 mt-4 flex flex-col h-full">
 
           {/* Auth Buttons */}
-          <div className="p-4 flex gap-4">
+          <div className="p-4 flex gap-4 bg-[#2a2929]">
             <Button
               className="flex-1 bg-[#8E2DE2] hover:bg-[#7B27C1] text-white"
               onClick={() => handleNavigation('/register')}
@@ -145,11 +145,11 @@ export function GuestMenu() {
           </div>
 
           {/* Menu Items */}
-          <div className="flex-1 py-2">
+          <div className="flex-1 py-2 pl-3 pr-3 mt-2">
             {menuItems.map((item) => (
               <div key={item.label}>
                 <button
-                  className={`flex items-center justify-between w-full px-6 py-4 hover:bg-zinc-900/50 transition-colors ${item.highlight ? 'text-[#FF1493]' : 'text-white'}`}
+                  className={`flex items-center justify-between w-full rounded-sm px-6 py-4 hover:bg-zinc-900/50 transition-colors ${item.highlight ? 'text-[#FF1493] bg-[#2f2529]' : 'text-white'}`}
                   onClick={() => handleMenuItemClick(item)}
                 >
                   <div className="flex items-center gap-4">
@@ -183,7 +183,7 @@ export function GuestMenu() {
           </div>
 
           {/* Subscribe Banner */}
-          <div className="px-4 py-3">
+          <div className="px-4 py-3 mb-2">
             <div
               className="rounded-lg p-4 bg-gradient-to-br from-[#1E1E1E] to-[#121212] flex items-center justify-between cursor-pointer"
               onClick={() => handleNavigation('/subscribe')}
