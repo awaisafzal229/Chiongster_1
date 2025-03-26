@@ -143,10 +143,10 @@ export function MainMenu() {
           </div>
 
           {/* ✅ Push Content Below Navbar (inside the same parent div) */}
-          {/* <main className="pt-16"> */}
-          {/* <h1 className="text-white">Your Content Starts Here</h1>
+          <main className="pt-16">
+            {/* <h1 className="text-white">Your Content Starts Here</h1>
             <p className="text-gray-300">This will now be visible below the fixed navbar.</p> */}
-          {/* </main> */}
+          </main>
         </div>
       </SheetTrigger>
       <SheetContent

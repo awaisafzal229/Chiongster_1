@@ -116,13 +116,13 @@ export function HomeBanner() {
         <>
           <button
             onClick={prevBanner}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 p-2 rounded-full"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full"
           >
             <ChevronLeft className="w-6 h-6 text-white" />
           </button>
           <button
             onClick={nextBanner}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 p-2 rounded-full"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full"
           >
             <ChevronRight className="w-6 h-6 text-white" />
           </button>
