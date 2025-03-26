@@ -1,5 +1,4 @@
 {
-  "/page": "app/page.js",
   "/(vibe)/[vibe]/page": "app/(vibe)/[vibe]/page.js",
   "/activities/page": "app/activities/page.js",
   "/my-drink-dollars/page": "app/my-drink-dollars/page.js",
