@@ -232,25 +232,25 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
     fetchVenueData()
   }, [params.slug, router])
 
-  useEffect(() => {
-    if (!isPromotionModalOpen || (venueData?.promotion_images.length ?? 0) <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentPromoIndex((prev) =>
-        prev === (venueData?.promotion_images.length ?? 1) - 1 ? 0 : prev + 1
-      );
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [isPromotionModalOpen, venueData])
+  // useEffect(() => {
+  //   if (!isPromotionModalOpen || (venueData?.promotion_images.length ?? 0) <= 1) return;
+  //   const interval = setInterval(() => {
+  //     setCurrentPromoIndex((prev) =>
+  //       prev === (venueData?.promotion_images.length ?? 1) - 1 ? 0 : prev + 1
+  //     );
+  //   }, 3000);
+  //   return () => clearInterval(interval);
+  // }, [isPromotionModalOpen, venueData])
 
-  useEffect(() => {
-    if (!isEventModalOpen || (venueData?.event_images.length ?? 0) <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentEventIndex((prev) =>
-        prev === (venueData?.event_images.length ?? 1) - 1 ? 0 : prev + 1
-      );
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [isEventModalOpen, venueData])
+  // useEffect(() => {
+  //   if (!isEventModalOpen || (venueData?.event_images.length ?? 0) <= 1) return;
+  //   const interval = setInterval(() => {
+  //     setCurrentEventIndex((prev) =>
+  //       prev === (venueData?.event_images.length ?? 1) - 1 ? 0 : prev + 1
+  //     );
+  //   }, 3000);
+  //   return () => clearInterval(interval);
+  // }, [isEventModalOpen, venueData])
 
   if (!venueData) {
     return <VenueDetailsSkeleton />

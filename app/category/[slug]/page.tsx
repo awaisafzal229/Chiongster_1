@@ -81,13 +81,13 @@ interface ModalProps {
 
 const ImageModal = ({ isOpen, onClose, title, images, currentIndex, setCurrentIndex }: ModalProps) => {
   // Auto-slide every 3 seconds
-  useEffect(() => {
-    if (!isOpen || images.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [isOpen, images, setCurrentIndex]);
+  // useEffect(() => {
+  //   if (!isOpen || images.length <= 1) return;
+  //   const interval = setInterval(() => {
+  //     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  //   }, 3000);
+  //   return () => clearInterval(interval);
+  // }, [isOpen, images, setCurrentIndex]);
 
   if (!isOpen || images.length === 0) return null;
 

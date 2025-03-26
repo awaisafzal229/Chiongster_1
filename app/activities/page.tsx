@@ -96,7 +96,12 @@ export default function ActivitiesPage() {
 
             {/* Activities List */}
             <div className="px-6 space-y-6">
-                {loading && <p className="text-center text-zinc-400">Loading...</p>}
+                {/* ✅ Loading & Error Handling */}
+                {loading && (
+                    <div className="flex justify-center items-center py-8">
+                        <div className="w-6 h-6 border-2 border-t-transparent border-white rounded-full animate-spin" />
+                    </div>
+                )}
                 {error && <p className="text-center text-red-500">{error}</p>}
                 {!loading && !error && activities.length === 0 && (
                     <p className="text-center text-zinc-400">No activities found.</p>

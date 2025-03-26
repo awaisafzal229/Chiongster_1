@@ -81,29 +81,29 @@ export function TopPicks() {
 
 
 
-  useEffect(() => {
-    if (!isPromotionModalOpen || selectedPromotions.length <= 1) return;
+  // useEffect(() => {
+  //   if (!isPromotionModalOpen || selectedPromotions.length <= 1) return;
 
-    const interval = setInterval(() => {
-      setCurrentPromoIndex((prev) =>
-        prev === selectedPromotions.length - 1 ? 0 : prev + 1
-      );
-    }, 3000); // 3 seconds
+  //   const interval = setInterval(() => {
+  //     setCurrentPromoIndex((prev) =>
+  //       prev === selectedPromotions.length - 1 ? 0 : prev + 1
+  //     );
+  //   }, 3000); // 3 seconds
 
-    return () => clearInterval(interval); // Cleanup
-  }, [isPromotionModalOpen, selectedPromotions]);
+  //   return () => clearInterval(interval); // Cleanup
+  // }, [isPromotionModalOpen, selectedPromotions]);
 
-  useEffect(() => {
-    if (!isEventModalOpen || selectedEvents.length <= 1) return;
+  // useEffect(() => {
+  //   if (!isEventModalOpen || selectedEvents.length <= 1) return;
 
-    const interval = setInterval(() => {
-      setCurrentEventIndex((prev) =>
-        prev === selectedEvents.length - 1 ? 0 : prev + 1
-      );
-    }, 3000);
+  //   const interval = setInterval(() => {
+  //     setCurrentEventIndex((prev) =>
+  //       prev === selectedEvents.length - 1 ? 0 : prev + 1
+  //     );
+  //   }, 3000);
 
-    return () => clearInterval(interval);
-  }, [isEventModalOpen, selectedEvents]);
+  //   return () => clearInterval(interval);
+  // }, [isEventModalOpen, selectedEvents]);
 
 
   const getLocation = () => {
@@ -525,7 +525,7 @@ export function TopPicks() {
               {selectedEvents.length > 1 && (
                 <button
                   onClick={() =>
-                    setCurrentPromoIndex((prev) =>
+                    setCurrentEventIndex((prev) =>
                       prev === 0 ? selectedEvents.length - 1 : prev - 1
                     )
                   }
@@ -539,7 +539,7 @@ export function TopPicks() {
               {selectedEvents.length > 1 && (
                 <button
                   onClick={() =>
-                    setCurrentPromoIndex((prev) =>
+                    setCurrentEventIndex((prev) =>
                       prev === selectedEvents.length - 1 ? 0 : prev + 1
                     )
                   }

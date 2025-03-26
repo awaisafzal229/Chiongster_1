@@ -156,7 +156,7 @@ export function MainMenu() {
         <div className="flex flex-col h-full overflow-y-auto pt-10">
 
           {/* Profile Section */}
-          <div className="relative h-[120px] bg-[#2a2929] p-4">
+          <div className="relative min-h-[80px] bg-[#2a2929] p-4">
             <div className="flex items-center gap-3 mt-4">
               <div className="w-12 h-12 rounded-full bg-zinc-700 flex items-center justify-center">
                 <User className="w-6 h-6 text-zinc-400" />
@@ -164,7 +164,7 @@ export function MainMenu() {
               <div>
                 <h2 className="font-semibold text-white text-lg font-futura">Name Here</h2>
                 <Link href="/profile">
-                  <button className="text-sm text-white/90 flex items-center gap-1 font-futura">
+                  <button className="underline text-sm text-white/90 flex items-center gap-1 font-futura">
                     SEE PROFILE
                     <ChevronRight className="w-4 h-4" />
                   </button>

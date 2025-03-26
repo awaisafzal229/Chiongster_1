@@ -972,6 +972,15 @@ body{
 .h-svh{
   height: 100svh;
 }
+.h-0{
+  height: 0px;
+}
+.h-\[80px\]{
+  height: 80px;
+}
+.h-\[100px\]{
+  height: 100px;
+}
 .max-h-96{
   max-height: 24rem;
 }
@@ -992,6 +1001,12 @@ body{
 }
 .min-h-svh{
   min-height: 100svh;
+}
+.min-h-\[90px\]{
+  min-height: 90px;
+}
+.min-h-\[100px\]{
+  min-height: 100px;
 }
 .w-0{
   width: 0px;
