@@ -511,15 +511,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
         ))}
       </div>
 
-      {/* Category Banner */}
-      <div
-        className="relative w-full h-[180px] bg-cover bg-center overflow-hidden mb-6g"
-        style={{
-          backgroundImage: `url('/placeholder.svg?height=30&width=120&text=${encodeURIComponent(categoryName || 'ChioNightOut')}')`,
-        }}
-      >
-        <div className="absolute inset-0 bg-black/50 pt-3" />
-      </div>
+
 
       {/* {(loading || loadingCategory || loadingActivity) ? (
         <Header
@@ -549,28 +541,63 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
 
         {(loading || loadingCategory || loadingActivity) ? (
           <>
+            {/* Skeleton Banner */}
+            <div className="relative w-full h-[180px] bg-zinc-800 overflow-hidden mb-6 animate-pulse">
+              <div className="absolute inset-0 bg-black/50 pt-3" />
+            </div>
             <div className="mb-6">
-              <div className="flex justify-between items-center">
-                <div className="animate-pulse">
-                  <div className="h-8 w-48 bg-zinc-800 rounded mb-2"></div>
-                  <div className="h-4 w-32 bg-zinc-800 rounded"></div>
-                </div>
+              {/* Category title skeleton */}
+              <div className="animate-pulse mb-6">
+                <div className="h-8 w-64 bg-zinc-800 rounded mb-4"></div>
+              </div>
+
+              {/* Sort selector skeleton */}
+              <div className="flex justify-end">
                 <div className="w-36 h-10 bg-zinc-800 rounded-lg animate-pulse"></div>
               </div>
             </div>
 
-            <div className="space-y-4 mb-8">
+            <div className="space-y-6 mb-8">
               {[...Array(3)].map((_, index) => (
                 <div key={index} className="bg-[#1A1A1A] rounded-lg overflow-hidden animate-pulse">
-                  <div className="h-48 bg-zinc-800"></div>
+                  {/* Image placeholder */}
+                  <div className="h-48 bg-zinc-800 relative">
+                    {/* Distance badge placeholder */}
+                    <div className="absolute top-3 right-3 w-12 h-5 bg-zinc-700 rounded-full"></div>
+                    {/* Discount badge placeholder */}
+                    <div className="absolute bottom-3 right-3 w-16 h-6 bg-zinc-700 rounded-lg"></div>
+                  </div>
+
                   <div className="p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-2 flex-1">
-                        <div className="h-6 w-48 bg-zinc-800 rounded"></div>
-                        <div className="h-4 w-32 bg-zinc-800 rounded"></div>
-                        <div className="h-6 w-24 bg-zinc-800 rounded"></div>
+                    {/* Title and buttons row */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="space-y-3 flex-1">
+                        <div className="h-6 w-3/4 bg-zinc-800 rounded"></div>
+                        <div className="flex gap-2">
+                          <div className="h-5 w-16 bg-zinc-800 rounded-full"></div>
+                          <div className="h-5 w-16 bg-zinc-800 rounded-full"></div>
+                        </div>
                       </div>
-                      <div className="w-32 h-10 bg-zinc-800 rounded"></div>
+                      <div className="flex gap-2">
+                        <div className="w-8 h-8 bg-zinc-800 rounded-full"></div>
+                        <div className="w-8 h-8 bg-zinc-800 rounded-full"></div>
+                      </div>
+                    </div>
+
+                    {/* Details section */}
+                    <div className="space-y-3 mb-4">
+                      <div className="h-4 w-full bg-zinc-800 rounded"></div>
+                      <div className="h-4 w-3/4 bg-zinc-800 rounded"></div>
+                      <div className="h-4 w-1/2 bg-zinc-800 rounded"></div>
+                    </div>
+
+                    {/* Button placeholder */}
+                    <div className="h-10 w-full bg-zinc-800 rounded-lg"></div>
+
+                    {/* Promotion links placeholder */}
+                    <div className="flex gap-4 mt-4">
+                      <div className="h-4 w-24 bg-zinc-800 rounded"></div>
+                      <div className="h-4 w-20 bg-zinc-800 rounded"></div>
                     </div>
                   </div>
                 </div>
@@ -579,6 +606,15 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           </>
         ) : (
           <>
+            {/* Category Banner */}
+            <div
+              className="relative w-full h-[180px] bg-cover bg-center overflow-hidden mb-6g"
+              style={{
+                backgroundImage: `url('/placeholder.svg?height=30&width=120&text=${encodeURIComponent(categoryName || 'ChioNightOut')}')`,
+              }}
+            >
+              <div className="absolute inset-0 bg-black/50 pt-3" />
+            </div>
             <div className="mb-6">
               {/* <div className="flex justify-between items-center"> */}
               <h1 className="block text-2xl font-bold mt-6 mb-4 uppercase tracking-wider">

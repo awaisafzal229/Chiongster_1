@@ -683,6 +683,9 @@ body{
 .top-full{
   top: 100%;
 }
+.bottom-3{
+  bottom: 0.75rem;
+}
 .z-10{
   z-index: 10;
 }
