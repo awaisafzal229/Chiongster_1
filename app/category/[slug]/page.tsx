@@ -542,8 +542,10 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
         {(loading || loadingCategory || loadingActivity) ? (
           <>
             {/* Skeleton Banner */}
-            <div className="relative w-full h-[180px] bg-zinc-800 overflow-hidden mb-6 animate-pulse">
-              <div className="absolute inset-0 bg-black/50 pt-3" />
+            <div className="w-screen relative left-1/2 right-1/2 mx-[-50vw]">
+              <div className="relative w-full h-[180px] bg-zinc-800 overflow-hidden mb-6 animate-pulse">
+                <div className="absolute inset-0 bg-black/50 pt-3" />
+              </div>
             </div>
             <div className="mb-6">
               {/* Category title skeleton */}
@@ -607,13 +609,15 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
         ) : (
           <>
             {/* Category Banner */}
-            <div
-              className="relative w-full h-[180px] bg-cover bg-center overflow-hidden mb-6g"
-              style={{
-                backgroundImage: `url('/placeholder.svg?height=30&width=120&text=${encodeURIComponent(categoryName || 'ChioNightOut')}')`,
-              }}
-            >
-              <div className="absolute inset-0 bg-black/50 pt-3" />
+            <div className="w-screen relative left-1/2 right-1/2 mx-[-50vw]">
+              <div
+                className="relative w-full h-[180px] bg-cover bg-center overflow-hidden mb-6"
+                style={{
+                  backgroundImage: `url('/placeholder.svg?height=30&width=120&text=${encodeURIComponent(categoryName || 'ChioNightOut')}')`,
+                }}
+              >
+                <div className="absolute inset-0 bg-black/50 pt-3" />
+              </div>
             </div>
             <div className="mb-6">
               {/* <div className="flex justify-between items-center"> */}
