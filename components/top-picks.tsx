@@ -294,8 +294,7 @@ export function TopPicks() {
       </div>
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto space-x-4 scrollbar-hide snap-x snap-mandatory px-4 sm:px-6"
-
+        className="flex overflow-x-auto space-x-4 scrollbar-hide snap-x snap-mandatory pl-4 sm:pl-6 pr-4"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -312,7 +311,7 @@ export function TopPicks() {
           const rating = Math.max(0, Math.min(5, Math.floor(venue.rating || 0)))
 
           return (
-            <div key={pick.id} className="flex-none w-[91%] max-w-[400px] snap-center">
+            <div key={pick.id} className="flex-none w-[105%] max-w-[400px] snap-start ml-4 first:ml-0">
 
               <div className="bg-transparent rounded-lg overflow-hidden shadow-lg">
                 <div className="relative">
@@ -331,12 +330,12 @@ export function TopPicks() {
                       />
                     </div>
                   </Link>
-                  <div className="absolute bottom-2 right-5 bg-purple-600 text-white text-sm px-4 py-1 rounded-full flex items-center gap-1 shadow-md">
-                    <span className="font-bold text-lg">{venue.drink_dollars}%</span>
+                  <div className="absolute bottom-2 right-5 bg-gradient-to-r from-[#512e8d] to-[#7254c4]  text-white text-sm px-4 py-1 rounded-full flex items-center gap-1 shadow-md">
+                    <span className="font-bold text-xl">{venue.drink_dollars}%</span>
                     <img
                       src="/coin.png" // 🔁 Replace with actual coin icon path
                       alt="Coin"
-                      className="w-5 h-5"
+                      className="w-3.5 h-3.5"
                     />
                   </div>
 
@@ -345,18 +344,18 @@ export function TopPicks() {
                   <div className="flex items-start justify-between">
                     <div>
                       <Link href={`/venue/${venue.slug || ''}`}>
-                        <h3 className="text-lg font-bold text-white">{venue.name || 'Unnamed Venue'}</h3>
+                        <h3 className="text-md font-bold text-white">{venue.name || 'Unnamed Venue'}</h3>
                       </Link>
-                      <p className="text-sm bg-[#953553] rounded-lg px-2 py-0.5 inline-block mt-1 text-white">
+                      <p className="text-[10px] bg-[#321623] rounded-xl px-2 py-0.5 inline-block mt-1 text-gray-300">
                         {category}
                       </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-0">
                       <button className="p-2 hover:bg-zinc-800 rounded-full">
-                        <Heart className="w-5 h-5 text-white" />
+                        <Heart className="w-4 h-4 text-gray-300" />
                       </button>
                       <button className="p-2 hover:bg-zinc-800 rounded-full">
-                        <Share2 className="w-5 h-5 text-white" />
+                        <Share2 className="w-4 h-4 text-gray-300" />
                       </button>
                     </div>
                   </div>
@@ -426,7 +425,9 @@ export function TopPicks() {
       >
         <ChevronLeft className="w-6 h-6 text-white" />
       </button>
-      <button
+
+
+      {/* <button
         onClick={() => scroll("right")}
         className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black/50 p-2 rounded-full"
         style={{
@@ -439,7 +440,9 @@ export function TopPicks() {
         }}
       >
         <ChevronRight className="w-6 h-6 text-white" />
-      </button>
+      </button> */}
+
+
       {/* 🔥 Promotion Modal with Slideshow */}
       {isPromotionModalOpen && selectedPromotions.length > 0 && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center" onClick={() => setIsPromotionModalOpen(false)}>

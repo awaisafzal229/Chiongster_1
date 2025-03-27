@@ -627,16 +627,34 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
                 </span>
                 <div className="">
                   <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger
-                      className="min-w-[190px] bg-transparent border border-pink-500 text-white"
-                    >
+                    <SelectTrigger className="min-w-[190px] bg-transparent border border-pink-500 text-white">
                       <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
                     <SelectContent className="bg-black border-pink-500 text-white">
-                      <SelectItem className="text-pink-400 font-bold data-[highlighted]:text-pink-500 data-[highlighted]:bg-zinc-800" value="nearby">Nearest to You</SelectItem>
-                      <SelectItem value="relevance">Most Relevant</SelectItem>
-                      <SelectItem value="lowest_price">Price: Low to High</SelectItem>
-                      <SelectItem value="highest_price">Price: High to Low</SelectItem>
+                      <SelectItem
+                        className={`${sortBy === 'nearby' ? 'text-pink-500' : 'text-white'} hover:bg-zinc-800`}
+                        value="nearby"
+                      >
+                        Nearest to You
+                      </SelectItem>
+                      <SelectItem
+                        className={`${sortBy === 'relevance' ? 'text-pink-500' : 'text-white'} hover:bg-zinc-800`}
+                        value="relevance"
+                      >
+                        Most Relevant
+                      </SelectItem>
+                      <SelectItem
+                        className={`${sortBy === 'lowest_price' ? 'text-pink-500' : 'text-white'} hover:bg-zinc-800`}
+                        value="lowest_price"
+                      >
+                        Price: Low to High
+                      </SelectItem>
+                      <SelectItem
+                        className={`${sortBy === 'highest_price' ? 'text-pink-500' : 'text-white'} hover:bg-zinc-800`}
+                        value="highest_price"
+                      >
+                        Price: High to Low
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
