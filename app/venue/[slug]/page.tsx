@@ -295,9 +295,9 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-2xl font-bold">{venueData.name}</h1>
-            <div className="flex gap-2 mt-2">
+            <div className="flex flex-wrap gap-2 mt-1">
               {venueData.categories.map(category => (
-                <div key={category.id} className="bg-[#321623] text-gray-300 rounded-xl inline-block px-3 py-1 text-sm">
+                <div key={category.id} className="bg-[#321623] text-gray-300 rounded-xl inline-block px-3 py-1 text-xs">
                   {category.name}
                 </div>
               ))}

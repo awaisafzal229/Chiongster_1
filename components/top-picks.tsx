@@ -346,9 +346,11 @@ export function TopPicks() {
                       <Link href={`/venue/${venue.slug || ''}`}>
                         <h3 className="text-md font-bold text-white">{venue.name || 'Unnamed Venue'}</h3>
                       </Link>
-                      <p className="text-[10px] bg-[#321623] rounded-xl px-2 py-0.5 inline-block mt-1 text-gray-300">
-                        {category}
-                      </p>
+                      {venue.categories?.map((cat) => (
+                        <p key={cat.id} className="text-[10px] bg-[#321623] rounded-xl px-2 py-0.5 inline-block mt-1 text-gray-300">
+                          {cat.name}
+                        </p>
+                      ))}
                     </div>
                     <div className="flex gap-0">
                       <button className="p-2 hover:bg-zinc-800 rounded-full">

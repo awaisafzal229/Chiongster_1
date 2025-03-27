@@ -738,7 +738,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
                         <h3 className="text-lg font-bold">{venue.name}</h3>
                         <div className="flex flex-wrap gap-2 mt-1">
                           {venue.categories.map((d) => (
-                            <span key={d.id} className="text-[10px] text-sm bg-[#321623] rounded-xl px-2 py-0.5 inline-block mt-1 text-gray-300">
+                            <span key={d.id} className="text-xs bg-[#321623] rounded-xl px-2 py-0.5 inline-block mt-1 text-gray-300">
                               {d.name}
                             </span>
                           ))}

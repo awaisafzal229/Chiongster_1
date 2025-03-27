@@ -45,7 +45,7 @@ export function InterestSection() {
           <button
             key={activity.id}
             onClick={() => handleActivityClick(activity.name)}
-            className={`group flex flex-col items-center justify-center p-4 bg-[#282728] backdrop-blur-sm rounded-lg space-y-2 hover:bg-zinc-800/70 transition-all duration-300 ${selectedActivity === activity.name ? 'translate-x-[120%] opacity-0 scale-95' : ''
+            className={`group flex flex-col items-center justify-center p-4 bg-white/10 backdrop-blur-sm rounded-lg space-y-2 hover:bg-zinc-800/70 transition-all duration-300 ${selectedActivity === activity.name ? 'translate-x-[120%] opacity-0 scale-95' : ''
               }`}
             style={{
               transitionDelay: selectedActivity === activity.name ? `${index * 50}ms` : '0ms'
