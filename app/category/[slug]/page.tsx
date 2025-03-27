@@ -714,9 +714,13 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
                     </div> */}
 
                     {/* {venue.discount && ( */}
-                    <div className="absolute bottom-2 right-2 bg-purple-600 text-white text-sm px-3 py-1 rounded-lg">
-                      {/* {venue.discount} */}
-                      10% OFF
+                    <div className="absolute bottom-2 right-5 bg-gradient-to-r from-[#512e8d] to-[#7254c4]  text-white text-sm px-4 py-1 rounded-full flex items-center gap-1 shadow-md">
+                      <span className="font-bold text-xl">{venue.drink_dollars}%</span>
+                      <img
+                        src="/coin.png" // 🔁 Replace with actual coin icon path
+                        alt="Coin"
+                        className="w-3.5 h-3.5"
+                      />
                     </div>
                     {/* )} */}
 
@@ -730,7 +734,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
                         <h3 className="text-lg font-bold">{venue.name}</h3>
                         <div className="flex flex-wrap gap-2 mt-1">
                           {venue.categories.map((d) => (
-                            <span key={d.id} className="text-sm bg-[#953553] rounded-lg px-2 text-white">
+                            <span key={d.id} className="text-[10px] text-sm bg-[#321623] rounded-xl px-2 py-0.5 inline-block mt-1 text-gray-300">
                               {d.name}
                             </span>
                           ))}
@@ -743,14 +747,14 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
                           className="p-2 hover:bg-zinc-800 rounded-full"
                         >
                           <Heart
-                            className={`w-5 h-5 ${favorites.includes(venue.id)
+                            className={`w-4 h-4 ${favorites.includes(venue.id)
                               ? 'fill-red-500 text-red-500'
-                              : 'text-white'
+                              : 'text-gray-300'
                               }`}
                           />
                         </button>
                         <button className="p-2 hover:bg-zinc-800 rounded-full">
-                          <Share2 className="w-5 h-5" />
+                          <Share2 className="w-4 h-4 text-gray-300" />
                         </button>
                       </div>
                     </div>

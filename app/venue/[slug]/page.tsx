@@ -274,8 +274,13 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
 
       {/* Hero Image */}
       <div className="relative aspect-[16/9] w-full">
-        <div className="absolute top-2 right-2 bg-purple-600 text-white text-sm px-3 py-1 rounded-lg z-10">
-          10% OFF
+        <div className="absolute bottom-2 right-5 bg-gradient-to-r from-[#512e8d] to-[#7254c4]  text-white text-sm px-4 py-1 rounded-full flex items-center gap-1 shadow-md z-10">
+          <span className="font-bold text-xl">{venueData.drink_dollars}%</span>
+          <img
+            src="/coin.png" // 🔁 Replace with actual coin icon path
+            alt="Coin"
+            className="w-3.5 h-3.5"
+          />
         </div>
         <Image
           src={venueData.image}
@@ -292,7 +297,7 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
             <h1 className="text-2xl font-bold">{venueData.name}</h1>
             <div className="flex gap-2 mt-2">
               {venueData.categories.map(category => (
-                <div key={category.id} className="inline-block px-3 py-1 bg-[#630330] rounded-full text-sm">
+                <div key={category.id} className="bg-[#321623] text-gray-300 rounded-xl inline-block px-3 py-1 text-sm">
                   {category.name}
                 </div>
               ))}
@@ -300,10 +305,10 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
           </div>
           <div className="flex gap-3">
             <button className="p-2 hover:bg-zinc-800 rounded-full">
-              <Heart className="w-6 h-6" />
+              <Heart className="w-6 h-6 text-gray-300" />
             </button>
             <button className="p-2 hover:bg-zinc-800 rounded-full">
-              <Share2 className="w-6 h-6" />
+              <Share2 className="w-6 h-6 text-gray-300" />
             </button>
           </div>
         </div>
@@ -328,10 +333,10 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
 
         {/* ... existing venue content ... */}
         <div className="flex gap-4">
-          <Button variant="link" className="text-pink-500 p-0 h-auto" onClick={() => { setCurrentPromoIndex(0); setIsPromotionModalOpen(true); }}>
+          <Button variant="link" className="underline text-pink-500 p-0 h-auto" onClick={() => { setCurrentPromoIndex(0); setIsPromotionModalOpen(true); }}>
             SEE PROMOTION
           </Button>
-          <Button variant="link" className="text-pink-500 p-0 h-auto" onClick={() => { setCurrentEventIndex(0); setIsEventModalOpen(true); }}>
+          <Button variant="link" className="underline text-pink-500 p-0 h-auto" onClick={() => { setCurrentEventIndex(0); setIsEventModalOpen(true); }}>
             SEE EVENT
           </Button>
         </div>
@@ -361,13 +366,13 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
         <div className="space-y-3 pb-8">
           <div className="flex items-center gap-2">
             <span className="text-zinc-400">★</span>
-            <span className="font-medium">Recommended For</span>
+            <span className="text-xs text-gray-400">Recommended For</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {venueData.activities.map((activity) => (
               <span
                 key={activity.id}
-                className="px-3 py-1 bg-[#630330] text-white rounded-full text-sm"
+                className="px-3 py-1 bg-[#321623] text-gray-300 rounded-full text-sm"
               >
                 {activity.name}
               </span>
@@ -387,7 +392,7 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
               {venueData.languages_full.map((lang) => (
                 <span
                   key={lang}
-                  className="px-3 py-1 bg-[#630330] text-white rounded-full text-sm"
+                  className="px-3 py-1 bg-[#321623] text-gray-300 rounded-full text-sm"
                 >
                   {lang}
                 </span>
@@ -398,7 +403,7 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
             <div key={section.id} className="flex items-start gap-2">
               <span className="text-zinc-400 w-24">{section.header}</span>
               <span>:</span>
-              <div dangerouslySetInnerHTML={{ __html: section.html_content }} />
+              <div className='text-sm' dangerouslySetInnerHTML={{ __html: section.html_content }} />
             </div>
           ))}
         </div>

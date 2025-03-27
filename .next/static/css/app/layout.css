@@ -2067,6 +2067,9 @@ body{
 .font-mono{
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
+.font-\[\]{
+  font-family: ;
+}
 .text-2xl{
   font-size: 1.5rem;
   line-height: 2rem;
@@ -2129,6 +2132,15 @@ body{
 }
 .font-thin{
   font-weight: 100;
+}
+.font-\[8px\]{
+  font-weight: 8px;
+}
+.font-\[3px\]{
+  font-weight: 3px;
+}
+.font-\[2px\]{
+  font-weight: 2px;
 }
 .uppercase{
   text-transform: uppercase;

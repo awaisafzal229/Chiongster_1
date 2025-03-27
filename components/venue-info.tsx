@@ -134,15 +134,15 @@ export function VenueInfo({ damageSections, openingHours, timings }: VenueInfoPr
               >
                 <h3 className="font-medium">{item.header}</h3>
                 <div className="text-sm">
-                  <div className="flex items-center gap-2">
+                  <div className="flex text-xs items-center gap-2">
                     <span className="text-zinc-400"><Users /></span>
-                    <span className="font-bold">No. of Pax:</span> {item.no_of_pax}
+                    <span className="font-bold text-zinc-400 ">No. of Pax:</span> {item.no_of_pax}
                   </div>
                 </div>
                 <div className="text-sm">
-                  <div className="flex items-center gap-2">
+                  <div className="flex text-xs items-center gap-2">
                     <span className="text-zinc-400"><Martini /></span>
-                    <span className="font-bold">Min Spend:</span> ${item.min_spend}
+                    <span className="font-bold text-zinc-400">Min Spend:</span> ${item.min_spend}
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -151,8 +151,8 @@ export function VenueInfo({ damageSections, openingHours, timings }: VenueInfoPr
                       key={nested.id}
                       className="grid grid-cols-3 gap-3 text-sm"
                     >
-                      <span className="text-zinc-400">{nested.session}</span>
-                      <span className="col-span-2">{nested.text}</span>
+                      <span className="text-white font-medium capitalize">{nested.session}</span>
+                      <span className="col-span-2 text-zinc-400">:{nested.text}</span>
                     </div>
                   ))}
                 </div>
