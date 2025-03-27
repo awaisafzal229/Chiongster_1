@@ -25,6 +25,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/venue/[slug]/page.js"
+    ],
+    "/(vibe)/[vibe]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(vibe)/[vibe]/page.js"
     ]
   }
 }

@@ -28,7 +28,7 @@ export function InterestSection() {
   const handleActivityClick = (activityName: string) => {
     setSelectedActivity(activityName);
     setIsNavigating(true);
-    
+
     setTimeout(() => {
       router.push(`/category/all?activity=${generateSlug(activityName)}`);
     }, 400);
@@ -45,23 +45,22 @@ export function InterestSection() {
           <button
             key={activity.id}
             onClick={() => handleActivityClick(activity.name)}
-            className={`group flex flex-col items-center justify-center p-6 bg-zinc-900/50 backdrop-blur-sm rounded-lg space-y-3 hover:bg-zinc-800/70 transition-all duration-300 ${
-              selectedActivity === activity.name ? 'translate-x-[120%] opacity-0 scale-95' : ''
-            }`}
+            className={`group flex flex-col items-center justify-center p-4 bg-[#282728] backdrop-blur-sm rounded-lg space-y-2 hover:bg-zinc-800/70 transition-all duration-300 ${selectedActivity === activity.name ? 'translate-x-[120%] opacity-0 scale-95' : ''
+              }`}
             style={{
               transitionDelay: selectedActivity === activity.name ? `${index * 50}ms` : '0ms'
             }}
           >
-            <div className="bg-white/10 backdrop-blur-sm p-3 rounded-full">
-              <Image 
-                src={activity.icon} 
-                alt={activity.name} 
-                width={24} 
+            <div className="  p-2 rounded-full">
+              <Image
+                src={activity.icon}
+                alt={activity.name}
+                width={24}
                 height={24}
-                className="w-6 h-6 object-contain transition-transform duration-300 group-hover:scale-110" 
+                className="w-6 h-6 object-contain transition-transform duration-300 group-hover:scale-110"
               />
             </div>
-            <span className="text-base font-medium text-white text-center">
+            <span className="text-sm font-medium text-white text-center">
               {activity.name}
             </span>
           </button>
