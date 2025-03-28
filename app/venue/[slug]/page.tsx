@@ -324,7 +324,7 @@ export default function VenueDetailsPage({ params }: VenueDetailsPageProps) {
 
         <div className="flex items-center gap-4 text-sm">
           <div>
-            <span className="text-[#FFA500]">Price: {'$'.repeat(Math.floor(venueData.price / 10))}</span>
+            <span className="text-[#FFA500]">Price: {'$'.repeat(Math.max(0, Math.min(5, venueData.price || 0)))}</span>
           </div>
           <div>
             <span className="text-[#FFA500]">Drinks Min Spend: ${venueData.min_spend}</span>
