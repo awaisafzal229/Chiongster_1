@@ -314,13 +314,13 @@ export function TopPicks() {
             <div key={pick.id} className="flex-none w-[105%] max-w-[400px] snap-start ml-4 first:ml-0">
 
               <div className="bg-transparent rounded-lg overflow-hidden shadow-lg">
-                <div className="relative">
-                  {pick.venue.distance !== undefined && (
-                    <span className="absolute top-2 right-5 bg-white/90 text-black text-xs px-2 py-1 rounded-full z-10">
-                      {formatDistance(pick.venue.distance)}
-                    </span>
-                  )}
-                  <Link href={`/venue/${venue.slug || ''}`}>
+                <Link href={`/venue/${venue.slug || ''}`}>
+                  <div className="relative">
+                    {pick.venue.distance !== undefined && (
+                      <span className="absolute top-2 right-5 bg-white/90 text-black text-xs px-2 py-1 rounded-full z-10">
+                        {formatDistance(pick.venue.distance)}
+                      </span>
+                    )}
                     <div className="relative w-full h-40 overflow-hidden rounded-lg">
                       <Image
                         src={venue.image || "/placeholder.svg"}
@@ -329,17 +329,17 @@ export function TopPicks() {
                         className="object-cover"
                       />
                     </div>
-                  </Link>
-                  <div className="absolute bottom-2 right-5 bg-gradient-to-r from-[#512e8d] to-[#7254c4]  text-white text-sm px-4 py-1 rounded-full flex items-center gap-1 shadow-md">
-                    <span className="font-bold text-xl">{venue.drink_dollars}%</span>
-                    <img
-                      src="/coin.png" // 🔁 Replace with actual coin icon path
-                      alt="Coin"
-                      className="w-3.5 h-3.5"
-                    />
-                  </div>
+                    <div className="absolute bottom-2 right-5 bg-gradient-to-r from-[#512e8d] to-[#7254c4]  text-white text-sm px-4 py-1 rounded-full flex items-center gap-1 shadow-md">
+                      <span className="font-bold text-xl">{venue.drink_dollars}%</span>
+                      <img
+                        src="/coin.png" // 🔁 Replace with actual coin icon path
+                        alt="Coin"
+                        className="w-3.5 h-3.5"
+                      />
+                    </div>
 
-                </div>
+                  </div>
+                </Link>
                 <div className="p-4 space-y-4">
                   <div className="flex items-start justify-between">
                     <div>
@@ -425,7 +425,7 @@ export function TopPicks() {
           )
         })}
       </div>
-      <button
+      {/* <button
         onClick={() => scroll("left")}
         className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black/50 p-2 rounded-full"
         style={{
@@ -433,7 +433,7 @@ export function TopPicks() {
         }}
       >
         <ChevronLeft className="w-6 h-6 text-white" />
-      </button>
+      </button> */}
 
 
       {/* <button
@@ -453,131 +453,135 @@ export function TopPicks() {
 
 
       {/* 🔥 Promotion Modal with Slideshow */}
-      {isPromotionModalOpen && selectedPromotions.length > 0 && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center" onClick={() => setIsPromotionModalOpen(false)}>
-          <div className="bg-zinc-900 p-4 rounded-lg w-full max-w-2xl relative overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="absolute top-3 right-3 text-white text-lg"
-              onClick={() => setIsPromotionModalOpen(false)}
-            >
-              ✕
-            </button>
-            <h3 className="text-center text-lg font-semibold text-white mb-3">Promotions</h3>
+      {
+        isPromotionModalOpen && selectedPromotions.length > 0 && (
+          <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center" onClick={() => setIsPromotionModalOpen(false)}>
+            <div className="bg-zinc-900 p-4 rounded-lg w-full max-w-2xl relative overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <button
+                className="absolute top-3 right-3 text-white text-lg"
+                onClick={() => setIsPromotionModalOpen(false)}
+              >
+                ✕
+              </button>
+              <h3 className="text-center text-lg font-semibold text-white mb-3">Promotions</h3>
 
-            {/* Slideshow */}
-            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md">
-              <img
-                src={selectedPromotions[currentPromoIndex].image}
-                alt="Promotion"
-                className="w-full h-full object-cover transition duration-500"
-              />
+              {/* Slideshow */}
+              <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md">
+                <img
+                  src={selectedPromotions[currentPromoIndex].image}
+                  alt="Promotion"
+                  className="w-full h-full object-cover transition duration-500"
+                />
 
-              {/* Left Arrow */}
-              {selectedPromotions.length > 1 && (
-                <button
-                  onClick={() =>
-                    setCurrentPromoIndex((prev) =>
-                      prev === 0 ? selectedPromotions.length - 1 : prev - 1
-                    )
-                  }
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
-                >
-                  ←
-                </button>
-              )}
+                {/* Left Arrow */}
+                {selectedPromotions.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setCurrentPromoIndex((prev) =>
+                        prev === 0 ? selectedPromotions.length - 1 : prev - 1
+                      )
+                    }
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                  >
+                    ←
+                  </button>
+                )}
 
-              {/* Right Arrow */}
-              {selectedPromotions.length > 1 && (
-                <button
-                  onClick={() =>
-                    setCurrentPromoIndex((prev) =>
-                      prev === selectedPromotions.length - 1 ? 0 : prev + 1
-                    )
-                  }
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
-                >
-                  →
-                </button>
-              )}
-            </div>
+                {/* Right Arrow */}
+                {selectedPromotions.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setCurrentPromoIndex((prev) =>
+                        prev === selectedPromotions.length - 1 ? 0 : prev + 1
+                      )
+                    }
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                  >
+                    →
+                  </button>
+                )}
+              </div>
 
-            {/* Indicators */}
-            <div className="flex justify-center mt-3 gap-2">
-              {selectedPromotions.map((_, i) => (
-                <span
-                  key={i}
-                  className={`w-2 h-2 rounded-full ${i === currentPromoIndex ? 'bg-pink-500' : 'bg-zinc-600'}`}
-                ></span>
-              ))}
+              {/* Indicators */}
+              <div className="flex justify-center mt-3 gap-2">
+                {selectedPromotions.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`w-2 h-2 rounded-full ${i === currentPromoIndex ? 'bg-pink-500' : 'bg-zinc-600'}`}
+                  ></span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
       {/* event modal  */}
-      {isEventModalOpen && selectedEvents.length > 0 && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center" onClick={() => setIsEventModalOpen(false)}>
-          <div className="bg-zinc-900 p-4 rounded-lg w-full max-w-2xl relative overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="absolute top-3 right-3 text-white text-lg"
-              onClick={() => setIsEventModalOpen(false)}
-            >
-              ✕
-            </button>
-            <h3 className="text-center text-lg font-semibold text-white mb-3">Events</h3>
+      {
+        isEventModalOpen && selectedEvents.length > 0 && (
+          <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center" onClick={() => setIsEventModalOpen(false)}>
+            <div className="bg-zinc-900 p-4 rounded-lg w-full max-w-2xl relative overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <button
+                className="absolute top-3 right-3 text-white text-lg"
+                onClick={() => setIsEventModalOpen(false)}
+              >
+                ✕
+              </button>
+              <h3 className="text-center text-lg font-semibold text-white mb-3">Events</h3>
 
-            {/* Slideshow */}
-            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md">
-              <img
-                src={selectedEvents[currentEventIndex].image}
-                alt="Event"
-                className="w-full h-full object-cover transition duration-500"
-              />
+              {/* Slideshow */}
+              <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md">
+                <img
+                  src={selectedEvents[currentEventIndex].image}
+                  alt="Event"
+                  className="w-full h-full object-cover transition duration-500"
+                />
 
-              {/* Left Arrow */}
-              {selectedEvents.length > 1 && (
-                <button
-                  onClick={() =>
-                    setCurrentEventIndex((prev) =>
-                      prev === 0 ? selectedEvents.length - 1 : prev - 1
-                    )
-                  }
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
-                >
-                  ←
-                </button>
-              )}
+                {/* Left Arrow */}
+                {selectedEvents.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setCurrentEventIndex((prev) =>
+                        prev === 0 ? selectedEvents.length - 1 : prev - 1
+                      )
+                    }
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                  >
+                    ←
+                  </button>
+                )}
 
-              {/* Right Arrow */}
-              {selectedEvents.length > 1 && (
-                <button
-                  onClick={() =>
-                    setCurrentEventIndex((prev) =>
-                      prev === selectedEvents.length - 1 ? 0 : prev + 1
-                    )
-                  }
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
-                >
-                  →
-                </button>
-              )}
-            </div>
+                {/* Right Arrow */}
+                {selectedEvents.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setCurrentEventIndex((prev) =>
+                        prev === selectedEvents.length - 1 ? 0 : prev + 1
+                      )
+                    }
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
+                  >
+                    →
+                  </button>
+                )}
+              </div>
 
-            {/* Indicators */}
-            <div className="flex justify-center mt-3 gap-2">
-              {selectedEvents.map((_, i) => (
-                <span
-                  key={i}
-                  className={`w-2 h-2 rounded-full ${i === currentEventIndex ? 'bg-pink-500' : 'bg-zinc-600'}`}
-                ></span>
-              ))}
+              {/* Indicators */}
+              <div className="flex justify-center mt-3 gap-2">
+                {selectedEvents.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`w-2 h-2 rounded-full ${i === currentEventIndex ? 'bg-pink-500' : 'bg-zinc-600'}`}
+                  ></span>
+                ))}
 
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
 
-    </section>
+    </section >
 
   )
 }
