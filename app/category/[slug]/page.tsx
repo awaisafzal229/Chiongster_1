@@ -689,12 +689,17 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
                 <div key={venue.id} className="bg-[#1A1A1A] rounded-lg overflow-hidden">
                   {/* ...Image section here... */}
                   <div className="relative h-48">
-                    <Image
-                      src={venue.image}
-                      alt={venue.name}
-                      fill
-                      className="object-cover"
-                    />
+                    <Link
+                      href={`/venue/${venue.slug}`}
+                      className="space-y-2 flex-1"
+                    >
+                      <Image
+                        src={venue.image}
+                        alt={venue.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </Link>
                     {venue.distance !== undefined && (
                       <div className="absolute top-2 right-2 bg-white/90 text-black text-xs px-2 py-1 rounded-full">
                         {venue.distance < 1
