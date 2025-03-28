@@ -381,11 +381,18 @@ export function TopPicks() {
                       </span>
                     </div>
                   </div>
-                  <Link href={`/venue/${venue.slug || ''}`}>
-                    <Button className="w-full bg-gradient-to-r from-[#8E2DE2] to-[#F000FF] text-white font-medium py-2 rounded-lg">
-                      MAKE A BOOKING
-                    </Button>
-                  </Link>
+                  {/* <Link href={`/venue/${venue.slug || ''}`}> */}
+                  <Button
+                    className="w-full bg-gradient-to-r from-[#8E2DE2] to-[#F000FF] text-white font-medium py-2 rounded-lg"
+                    onClick={() => {
+                      const message = `I would like to enquire and make a booking for ${venue.name}`;
+                      const whatsappUrl = `https://wa.me/923111748510?text=${encodeURIComponent(message)}`;
+                      window.open(whatsappUrl, '_blank');
+                    }}
+                  >
+                    MAKE A BOOKING
+                  </Button>
+                  {/* </Link> */}
                   <div className="flex gap-4 text-sm">
                     {venue.promotion_images.length > 0 && (
                       <button
